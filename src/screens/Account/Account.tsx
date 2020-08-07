@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import { Input, Button } from "react-native-elements";
 // Redux
 import { connect } from "react-redux";
-import { login, clear } from "../redux/actions/session.actions";
+import { login, clear } from "../../redux/actions/session.actions";
 
 function Account(props: any) {
     const { user, login, clear } = props;
