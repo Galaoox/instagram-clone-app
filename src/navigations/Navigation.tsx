@@ -5,7 +5,6 @@ import {
     BottomTabBarOptions,
 } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import { connect } from "react-redux";
 import { colors } from "../utils/theme";
 // Stacks
 import HomeStack from "./HomeStack";
@@ -15,8 +14,8 @@ import AccountStack from "./AccountStack";
 
 const Tab = createBottomTabNavigator();
 
-function Navigation(props: any) {
-    const { user = null } = props;
+export default function Navigation(props: any) {
+    const { user = true } = props; // TODO CAMBIAR ESOS PROPS
 
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive, // TODO: CAMBIAR ESTOS COLORES
@@ -111,10 +110,3 @@ function screenOptions(route: { name: string }, color: string) {
         />
     );
 }
-
-// Adiciona a los props entrantes los elementos del reducer
-const mapStateToProps = (state: any) => {
-    return { user: state.user }; // seleccionamos del reducer la info que llegara al componente
-};
-// conecta el componente con lo que esta en el storage
-export default connect(mapStateToProps)(Navigation);
