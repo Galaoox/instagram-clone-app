@@ -5,15 +5,19 @@ import {
     BottomTabBarOptions,
 } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
 import { colors } from "../utils/theme";
 // Stacks
 import HomeStack from "./HomeStack";
 import SearchStack from "./SearchStack";
 import ActivityStack from "./ActivityStack";
+import AccountStack from "./AccountStack";
 
 const Tab = createBottomTabNavigator();
 
-export default function Navigation() {
+function Navigation(props: any) {
+    const { user = null } = props;
+
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive, // TODO: CAMBIAR ESTOS COLORES
         activeTintColor: colors.principal, // TODO: CAMBIAR ESTOS COLORES,
@@ -22,43 +26,52 @@ export default function Navigation() {
     return (
         <NavigationContainer>
             <Tab.Navigator
-                initialRouteName="home"
+                initialRouteName={user ? "home" : "account"}
                 tabBarOptions={tabOptions}
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ color }) => screenOptions(route, color),
                 })}
             >
                 {/* HOME STACK */}
-                <Tab.Screen
-                    name="home"
-                    component={HomeStack}
-                    options={{
-                        tabBarLabel: "",
-                    }}
-                />
+                {user && (
+                    <Tab.Screen
+                        name="home"
+                        component={HomeStack}
+                        options={{
+                            tabBarLabel: "",
+                        }}
+                    />
+                )}
+
                 {/* SEARCH STACK */}
-                <Tab.Screen
-                    name="search"
-                    component={SearchStack}
-                    options={{
-                        tabBarLabel: "",
-                    }}
-                />
+                {user && (
+                    <Tab.Screen
+                        name="search"
+                        component={SearchStack}
+                        options={{
+                            tabBarLabel: "",
+                        }}
+                    />
+                )}
+
                 {/* ACTIVITY STACK */}
-                <Tab.Screen
-                    name="activity"
-                    component={ActivityStack}
-                    options={{
-                        tabBarLabel: "",
-                    }}
-                />
+                {user && (
+                    <Tab.Screen
+                        name="activity"
+                        component={ActivityStack}
+                        options={{
+                            tabBarLabel: "",
+                        }}
+                    />
+                )}
                 {/* ACCOUNT STACK */}
 
                 <Tab.Screen
                     name="account"
-                    component={SearchStack}
+                    component={AccountStack}
                     options={{
                         tabBarLabel: "",
+                        tabBarVisible: !!user,
                     }}
                 />
             </Tab.Navigator>
@@ -98,3 +111,10 @@ function screenOptions(route: { name: string }, color: string) {
         />
     );
 }
+
+// Adiciona a los props entrantes los elementos del reducer
+const mapStateToProps = (state: any) => {
+    return { user: state.user }; // seleccionamos del reducer la info que llegara al componente
+};
+// conecta el componente con lo que esta en el storage
+export default connect(mapStateToProps)(Navigation);
