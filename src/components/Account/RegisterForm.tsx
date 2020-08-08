@@ -54,7 +54,7 @@ function RegisterForm(props: any) {
             />
             <Button
                 onPress={submit}
-                title="Iniciar sesión"
+                title="Registrarse"
                 containerStyle={styles.btnContainerLogin}
                 buttonStyle={styles.btnLogin}
             />
