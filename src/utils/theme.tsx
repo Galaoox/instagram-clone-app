@@ -17,7 +17,7 @@ export const colors = {
 export const emailIcon: IconProps = {
     name: "at",
     type: "material-community",
-    color: colors.iconDisable,
+    color: colors.principal,
 };
 
 export function passwordIcon(
@@ -27,7 +27,7 @@ export function passwordIcon(
     return {
         type: "material-community",
         name: !showPassword ? "eye-off-outline" : "eye-outline",
-        color: !showPassword ? colors.iconDisable : colors.principal,
+        color: colors.principal,
         onPress: () => setShowPassword(!showPassword),
     };
 }

@@ -20,12 +20,14 @@ export default function LoginForm(props: ILoginFormProps) {
         <View style={styles.formContainer}>
             <Input
                 label="Correo electronico"
+                labelStyle={styles.labelInput}
                 placeholder="Correo electronico"
                 containerStyle={styles.input}
                 rightIcon={emailIcon}
             />
             <Input
                 label="Contraseña"
+                labelStyle={styles.labelInput}
                 placeholder="Contraseña"
                 rightIcon={passwordIcon(showPassword, setShowPassword)}
             />
@@ -45,16 +47,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 30,
+        shadowColor: "#585858",
+        shadowOffset: { width: 20, height: 20 },
+        shadowRadius: 10,
+        backgroundColor: "white",
+        borderRadius: 30,
     },
     input: {
         width: "100%",
         marginTop: 20,
     },
+    labelInput: {
+        color: "black",
+    },
     btnContainerLogin: {
         marginTop: 20,
+        marginBottom: 20,
         width: "95%",
     },
     btnLogin: {
         backgroundColor: colors.principal,
+        borderRadius: 100,
     },
 });
