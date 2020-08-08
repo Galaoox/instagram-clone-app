@@ -5,7 +5,7 @@ import LoginForm from "../../components/Account/LoginForm";
 import { Image } from "react-native-elements";
 import Toast from "react-native-easy-toast";
 import { SCREEN, colors } from "../../utils/theme";
-
+import { useNavigation } from "@react-navigation/native";
 export default function Login() {
     const toastRef = useRef();
     return (
@@ -21,12 +21,38 @@ export default function Login() {
 
             <View style={styles.viewContainer}>
                 <LoginForm toastRef={toastRef} />
+                <CreateAccount />
             </View>
         </ScrollView>
     );
 }
 
+function CreateAccount() {
+    const navigation = useNavigation();
+
+    const goToRegister = () => {
+        navigation.navigate("register");
+    };
+    return (
+        <Text style={styles.textRegister}>
+            ¿Aun no tienes una cuenta?{" "}
+            <Text
+                style={styles.btnRegister}
+                onPress={() => {
+                    goToRegister();
+                }}
+            >
+                Registrate
+            </Text>
+        </Text>
+    );
+}
+
 const styles = StyleSheet.create({
+    view: {
+        minHeight: "100%",
+        backgroundColor: "#f2f2f2",
+    },
     viewBackground: {
         width: SCREEN.WIDTH,
         height: 0,
@@ -50,12 +76,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     textRegister: {
-        marginTop: 15,
+        textAlign: "center",
+        marginTop: "50%",
         marginLeft: 10,
         marginRight: 10,
+        bottom: 0,
     },
     btnRegister: {
-        color: "#00a680",
+        color: colors.principal,
         fontWeight: "bold",
     },
 });

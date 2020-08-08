@@ -31,3 +31,15 @@ export function passwordIcon(
         onPress: () => setShowPassword(!showPassword),
     };
 }
+
+export const userIcon: IconProps = {
+    name: "account",
+    color: colors.principal,
+    type: "material-community",
+};
+
+export const nameIcon: IconProps = {
+    name: "card-text-outline",
+    color: colors.principal,
+    type: "material-community",
+};
