@@ -1,74 +1,91 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Avatar } from "react-native-elements";
-import * as Permissions from "expo-permissions";
-import * as ImagePicker from "expo-image-picker";
+import { openCamara } from "../../utils/common";
 
-export default function InfoProFile(props: any) {
+interface IInfoFileProps {
+    imageUrl: string;
+    posts: number;
+    followers: number;
+    following: number;
+    name: string;
+    bio: string;
+    changeImage: Function;
+}
+
+export default function InfoProFile(props: Partial<IInfoFileProps>) {
+    const {
+        imageUrl,
+        posts = 0,
+        followers = 0,
+        following = 0,
+        name = "Anonimo",
+        bio = "Nam animi est. Et et assumenda voluptate ea veniam. Qui deleniti non odio quo labore iure fugiat quam eum.",
+
+        changeImage,
+    } = props;
+
     const changeAvatar = async () => {
-        const resultsPermissions = await Permissions.askAsync(
-            Permissions.CAMERA_ROLL
-        );
-        const resultsPermissionsCamera =
-            resultsPermissions.permissions.cameraRoll.status;
-
-        if (resultsPermissionsCamera === "denied") {
-            // toastRef.current.show(
-            //     "Es necesario aceptar los permisos de la galeria"
-            // );
-        } else {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true,
-                aspect: [4, 3],
-            });
-            if (result.cancelled) {
-                // toastRef.current.show("Has cerrado la selección de imagenes");
-            } else {
-                // SI HAY PERMISOS EJECUTA ESTO
-            }
+        if (changeImage) {
+            const images = await openCamara();
+            changeImage(images);
         }
-    };
-
-    const uploadImage = async (uri: string) => {
-        // setLoading(true);
-        //setlLoadingText("Actualizando avatar");
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        // TODO: FALTA USAR EL SERVICIO DE SUBIR IMAGENES
-    };
-
-    const updatePhotoUrl = () => {
-        // TODO ACTUALIZAR FOTO DEL USUARIO
     };
 
     return (
         <View>
-            <Text>InfoProfile...</Text>
-            <Avatar
-                rounded
-                size="large"
-                containerStyle={styles.userInfoAvatar}
-                source={
-                    false
-                        ? { uri: "pruebas.png" }
-                        : require("../../../assets/avatar-default.jpg")
-                }
-                showAccessory
-                onAccessoryPress={changeAvatar}
-            />
+            <View style={styles.viewContainer}>
+                <Avatar
+                    rounded
+                    size="large"
+                    containerStyle={styles.userInfoAvatar}
+                    source={
+                        imageUrl
+                            ? { uri: imageUrl }
+                            : require("../../../assets/avatar-default.jpg")
+                    }
+                    showAccessory={!!changeImage}
+                    onAccessoryPress={changeAvatar}
+                />
+                <View style={styles.textGroup}>
+                    <Text>{posts}</Text>
+                    <Text>Posts</Text>
+                </View>
+                <View style={styles.textGroup}>
+                    <Text>{followers}</Text>
+                    <Text>Seguidores</Text>
+                </View>
+                <View style={styles.textGroup}>
+                    <Text>{following}</Text>
+                    <Text>Siguiendo</Text>
+                </View>
+            </View>
+            <Text style={styles.textName}>{name}</Text>
+            <Text style={styles.textBio}>{bio}</Text>
         </View>
     );
 }
 const styles = StyleSheet.create({
-    viewUserInfo: {
-        alignItems: "center",
-        justifyContent: "center",
+    viewContainer: {
+        flex: 1,
         flexDirection: "row",
-        backgroundColor: "#f2f2f2",
-        paddingBottom: 30,
-        paddingTop: 30,
+        justifyContent: "space-around",
+        alignItems: "center",
+        marginTop: 30,
     },
     userInfoAvatar: {
         marginRight: 20,
+    },
+    textGroup: {
+        alignItems: "center",
+    },
+    textName: {
+        marginTop: 20,
+        marginLeft: 10,
+        fontWeight: "bold",
+        fontSize: 17,
+    },
+    textBio: {
+        marginHorizontal: 10,
     },
 });
