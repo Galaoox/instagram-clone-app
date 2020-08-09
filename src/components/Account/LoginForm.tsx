@@ -4,7 +4,7 @@ import { Input, IconProps, Button } from "react-native-elements";
 import { passwordIcon, emailIcon, colors } from "../../utils/theme";
 import { connect } from "react-redux";
 import { login } from "../../redux/actions/session.actions";
-
+import { useNavigation } from "@react-navigation/native";
 interface ILoginFormProps {
     toastRef: any;
     login: Function;
@@ -15,9 +15,10 @@ function LoginForm(props: ILoginFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
+    const navigation = useNavigation();
 
     const submit = () => {
-        login({ email, password });
+        login({ email, password }).then(() => navigation.navigate("account"));
     };
 
     return (

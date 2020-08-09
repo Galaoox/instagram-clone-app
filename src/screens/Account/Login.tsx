@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     },
     textRegister: {
         textAlign: "center",
-        marginTop: "50%",
+        marginTop: 30,
         marginLeft: 10,
         marginRight: 10,
         bottom: 0,

@@ -1,14 +1,19 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Icon } from "react-native-elements";
+import { connect } from "react-redux";
+
 // Components
 import Account from "../screens/Account/Account";
 import Login from "../screens/Account/Login";
 import Register from "../screens/Account/Register";
-import { connect } from "react-redux";
+import NavigationIconConfig from "./NavigationIconConfig";
+import Config from "../screens/Account/Config";
 
 const Stack = createStackNavigator();
 function AccountStack(props: any) {
     const { user } = props;
+
     return (
         <Stack.Navigator
             screenOptions={{
@@ -21,12 +26,21 @@ function AccountStack(props: any) {
                     component={Account}
                     options={{
                         title: "Cuenta",
+                        headerRight: () => <NavigationIconConfig />,
                     }}
                 />
             )}
-
-            <Stack.Screen name="login" component={Login} />
-            <Stack.Screen name="register" component={Register} />
+            {user && (
+                <Stack.Screen
+                    name="config"
+                    component={Config}
+                    options={{
+                        title: "Configuración",
+                    }}
+                />
+            )}
+            {!user && <Stack.Screen name="login" component={Login} />}
+            {!user && <Stack.Screen name="register" component={Register} />}
         </Stack.Navigator>
     );
 }

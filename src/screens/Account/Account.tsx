@@ -1,52 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
 import { Input, Button } from "react-native-elements";
 // Redux
 import { connect } from "react-redux";
-import { login, clear } from "../../redux/actions/session.actions";
+import InfoProFile from "../../components/Account/InfoProfile";
+// Components
 
 function Account(props: any) {
-    const { user, login, clear } = props;
-    const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const submitLogin = () => {
-        setLoading(true);
-        login({ email, password })
-            .then((res: any) => {
-                setLoading(false);
-                Alert.alert("confirmacion", "Iniciaste sesión correctamente");
-                // Se puede enviar a otra screen
-            })
-            .catch((err: any) => {
-                setLoading(false);
-                Alert.alert("Error", err.message);
-            });
-    };
-    const deleteSession = () => {
-        clear();
-    };
-
     return (
-        <View>
-            <Text>Nombre usuario: {user.name}</Text>
-            <Input
-                label="correo"
-                placeholder="correo"
-                onChange={(event) => setEmail(event.nativeEvent.text)}
-            />
-            <Input
-                label="contra"
-                placeholder="contra"
-                onChange={(event) => setPassword(event.nativeEvent.text)}
-            />
-            <Button onPress={submitLogin} title="iniciar sesion" />
-            <Button onPress={deleteSession} title="eliminar sesion" />
-        </View>
+        <ScrollView style={styles.view}>
+            <Text>Account...</Text>
+            <InfoProFile />
+        </ScrollView>
     );
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    view: {
+        backgroundColor: "#ffff",
+    },
+});
 // Adiciona a los props entrantes los elementos del reducer
 const mapStateToProps = (state: any) => {
     return {
@@ -54,4 +26,4 @@ const mapStateToProps = (state: any) => {
     }; // seleccionamos del reducer la info que llegara al componente
 };
 // conecta el componente con lo que esta en el storage
-export default connect(mapStateToProps, { login, clear })(Account);
+export default connect(mapStateToProps)(Account);

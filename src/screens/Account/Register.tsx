@@ -26,7 +26,6 @@ export default function Register(props: IRegisterProps) {
                     style={styles.logo}
                 />
             </View>
-
             <View style={styles.viewForm}>
                 <RegisterForm />
             </View>
@@ -46,8 +45,8 @@ const styles = StyleSheet.create({
         height: 150,
     },
     viewForm: {
-        marginRight: 40,
-        marginLeft: 40,
+        marginBottom: 50,
+        marginHorizontal: 20,
     },
     viewBackground: {
         width: SCREEN.WIDTH,
