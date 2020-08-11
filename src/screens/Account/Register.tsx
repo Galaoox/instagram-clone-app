@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: 300,
-        marginTop: 70,
+        marginTop: 20,
         height: 150,
     },
     viewForm: {

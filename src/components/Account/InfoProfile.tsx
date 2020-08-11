@@ -25,6 +25,10 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
         changeImage,
     } = props;
 
+    /**
+     * Encargado de ejecutar la accion de seleccionar una imagen y enviar los datos de la imagen
+     * seleccionada al metodo changeImage
+     */
     const changeAvatar = async () => {
         if (changeImage) {
             const images = await openCamara();

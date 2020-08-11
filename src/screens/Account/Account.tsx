@@ -4,27 +4,39 @@ import { Input, Button } from "react-native-elements";
 // Redux
 import { connect } from "react-redux";
 import InfoProFile from "../../components/Account/InfoProfile";
+import GridPosts from "../../components/Posts/GridPosts";
 // Components
 
 function Account(props: any) {
+    /**
+     *  Encargado de recibir las imagenes que el usuario selecciono y
+     *  realizar la solicitud http para cambiar el avatar del usuario
+     * @param images
+     */
     const changeImage = (images: Object) => {
         console.log(images);
     };
 
     return (
-        <ScrollView style={styles.view}>
-            <InfoProFile changeImage={changeImage} />
-
-            <View style={styles.viewButton}>
-                <Button
-                    containerStyle={styles.btnEditContainer}
-                    buttonStyle={styles.btnEdit}
-                    title="Editar información"
-                    type="clear"
-                    titleStyle={styles.btnTitle}
-                />
-            </View>
-        </ScrollView>
+        <View style={styles.view}>
+            <GridPosts>
+                {/* SE PASA AL COMPONENTE GRIDPOSTS COMO CHILDREN DEBIDO A LOS PROBLEMAS DE
+                EL FLATLIST CON  EL SCROLLVIEW
+            */}
+                <View>
+                    <InfoProFile changeImage={changeImage} />
+                    <View style={styles.viewButton}>
+                        <Button
+                            containerStyle={styles.btnEditContainer}
+                            buttonStyle={styles.btnEdit}
+                            title="Editar información"
+                            type="clear"
+                            titleStyle={styles.btnTitle}
+                        />
+                    </View>
+                </View>
+            </GridPosts>
+        </View>
     );
 }
 const styles = StyleSheet.create({

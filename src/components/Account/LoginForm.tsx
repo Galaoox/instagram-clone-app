@@ -16,7 +16,11 @@ function LoginForm(props: ILoginFormProps) {
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
     const navigation = useNavigation();
-
+    /**
+     * Encargado de realizar la peticion http al backend haciendo uso del
+     * action "login" enviando como parametro "email" y "password"
+     * y si es correcto el inicio de sesion ira a la screen account
+     */
     const submit = () => {
         login({ email, password }).then(() => navigation.navigate("account"));
     };

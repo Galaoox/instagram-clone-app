@@ -17,7 +17,10 @@ function RegisterForm(props: any) {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
-
+    /**
+     * Encargado de realizar la solicitud http al action "login"
+     * enviando como parametro email y password
+     */
     const submit = () => {
         login({ email, password });
     };
