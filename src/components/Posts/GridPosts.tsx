@@ -31,7 +31,7 @@ export default function GridPosts(props: { children: any }) {
      */
     const renderItem = ({ item }: any) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity style={styles.touchableOpacityColor}>
                 <Image
                     source={
                         item && item.imageUrl
@@ -93,6 +93,11 @@ const styles = StyleSheet.create({
         flex: 1 / numColumns,
         width: SCREEN.WIDTH / numColumns,
         height: SCREEN.WIDTH / numColumns,
+        borderColor: "#ffff",
+        borderWidth: 2,
+    },
+    touchableOpacityColor: {
+        backgroundColor: "#838383",
     },
 });
 
