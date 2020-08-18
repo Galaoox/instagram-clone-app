@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Avatar } from "react-native-elements";
+import { Avatar, IconProps } from "react-native-elements";
 import { openCamara } from "../../utils/common";
+import { colors } from "../../utils/theme";
 
 interface IInfoFileProps {
     imageUrl: string;
@@ -50,6 +51,11 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
                     }
                     showAccessory={!!changeImage}
                     onAccessoryPress={changeAvatar}
+                    accessory={{
+                        type: "material-community",
+                        name: "plus",
+                        containerStyle: styles.containerAccesory,
+                    }}
                 />
                 <View style={styles.textGroup}>
                     <Text>{posts}</Text>
@@ -91,5 +97,11 @@ const styles = StyleSheet.create({
     },
     textBio: {
         marginHorizontal: 10,
+    },
+    containerAccesory: {
+        borderWidth: 2,
+        borderColor: "#ffff",
+        backgroundColor: colors.principal,
+        borderRadius: 100,
     },
 });
