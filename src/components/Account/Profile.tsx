@@ -4,10 +4,10 @@ import { Button, Icon, Divider } from "react-native-elements";
 // Redux
 import InfoProFile from "../../components/Account/InfoProfile";
 import GridPosts from "../../components/Posts/GridPosts";
-import { SCREEN } from "../../utils/theme";
+import { SCREEN, colors } from "../../utils/theme";
 
 export default function Profile(props: any) {
-    const isUser = true; // bandera que indica si es el usuario que inicio sesion
+    const isUser = false; // bandera que indica si es el usuario que inicio sesion
 
     /**
      *  Encargado de recibir las imagenes que el usuario selecciono y
@@ -28,13 +28,23 @@ export default function Profile(props: any) {
                 <View>
                     <InfoProFile changeImage={changeImage} />
                     <View style={styles.viewButton}>
-                        <Button
-                            containerStyle={styles.btnEditContainer}
-                            buttonStyle={styles.btnEdit}
-                            title="Editar información"
-                            type="clear"
-                            titleStyle={styles.btnTitle}
-                        />
+                        {isUser ? (
+                            <Button
+                                containerStyle={styles.btnEditContainer}
+                                buttonStyle={styles.btnEdit}
+                                title="Editar información"
+                                type="clear"
+                                titleStyle={styles.btnTitle}
+                            />
+                        ) : (
+                            <Button
+                                containerStyle={styles.btnFollowContainer}
+                                buttonStyle={styles.btnFollow}
+                                title="Seguir"
+                                type="clear"
+                                titleStyle={styles.btnTitleFollow}
+                            />
+                        )}
                         <View>
                             <Icon
                                 type="material-community"
@@ -68,6 +78,18 @@ const styles = StyleSheet.create({
     },
     btnTitle: {
         color: "black",
+    },
+    btnFollowContainer: {
+        marginTop: 20,
+        marginBottom: 10,
+        height: 40,
+        width: "95%",
+    },
+    btnFollow: {
+        backgroundColor: colors.principal,
+    },
+    btnTitleFollow: {
+        color: "#ffff",
     },
     iconGrid: {
         fontSize: 40,
