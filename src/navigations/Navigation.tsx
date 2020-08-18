@@ -20,8 +20,8 @@ function Navigation(props: any) {
     const { user } = props; // TODO CAMBIAR ESOS PROPS
 
     const tabOptions: BottomTabBarOptions = {
-        inactiveTintColor: colors.inactive, // TODO: CAMBIAR ESTOS COLORES
-        activeTintColor: colors.principal, // TODO: CAMBIAR ESTOS COLORES,
+        inactiveTintColor: colors.inactive,
+        activeTintColor: colors.principal,
         showLabel: false,
     };
     return (
@@ -49,6 +49,17 @@ function Navigation(props: any) {
                     {user && (
                         <Tab.Screen
                             name="search"
+                            component={SearchStack}
+                            options={{
+                                tabBarLabel: "",
+                            }}
+                        />
+                    )}
+
+                    {/* POST STACK  CAMBIAR EL COMPONENTE*/}
+                    {user && (
+                        <Tab.Screen
+                            name="post"
                             component={SearchStack}
                             options={{
                                 tabBarLabel: "",
@@ -94,7 +105,7 @@ function screenOptions(route: { name: string }, color: string) {
             iconName = "home-variant";
             break;
         case "activity":
-            iconName = "heart-outline";
+            iconName = color === colors.inactive ? "heart-outline" : "heart";
             break;
         case "search":
             iconName = "magnify";
@@ -102,6 +113,8 @@ function screenOptions(route: { name: string }, color: string) {
         case "account":
             iconName = "account-circle";
             break;
+        case "post":
+            iconName = "plus-box-outline";
         default:
             break;
     }
