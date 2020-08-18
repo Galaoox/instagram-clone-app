@@ -9,38 +9,51 @@ import Login from "../screens/Account/Login";
 import Register from "../screens/Account/Register";
 import NavigationIconConfig from "./NavigationIconConfig";
 import Config from "../screens/Account/Config";
+import EditProfile from "../screens/Account/EditProfile";
 
 const Stack = createStackNavigator();
 function AccountStack(props: any) {
     const { user } = props;
 
-    return (
+    return user ? (
         <Stack.Navigator
             screenOptions={{
                 headerShown: user,
             }}
         >
-            {user && (
-                <Stack.Screen
-                    name="account"
-                    component={Account}
-                    options={{
-                        title: "Cuenta",
-                        headerRight: () => <NavigationIconConfig />,
-                    }}
-                />
-            )}
-            {user && (
-                <Stack.Screen
-                    name="config"
-                    component={Config}
-                    options={{
-                        title: "Configuración",
-                    }}
-                />
-            )}
-            {!user && <Stack.Screen name="login" component={Login} />}
-            {!user && <Stack.Screen name="register" component={Register} />}
+            <Stack.Screen
+                name="account"
+                component={Account}
+                options={{
+                    title: "Cuenta",
+                    headerRight: () => <NavigationIconConfig />,
+                }}
+            />
+
+            <Stack.Screen
+                name="config"
+                component={Config}
+                options={{
+                    title: "Configuración",
+                }}
+            />
+
+            <Stack.Screen
+                name="editProfile"
+                component={EditProfile}
+                options={{
+                    title: "Editar perfil",
+                }}
+            />
+        </Stack.Navigator>
+    ) : (
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: user,
+            }}
+        >
+            <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="register" component={Register} />
         </Stack.Navigator>
     );
 }

@@ -1,13 +1,15 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Icon, Divider } from "react-native-elements";
-// Redux
+import { useNavigation } from "@react-navigation/native";
+// Components
 import InfoProFile from "../../components/Account/InfoProfile";
 import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
 
 export default function Profile(props: any) {
-    const isUser = false; // bandera que indica si es el usuario que inicio sesion
+    const navigation = useNavigation();
+    const isUser = true; // bandera que indica si es el usuario que inicio sesion
 
     /**
      *  Encargado de recibir las imagenes que el usuario selecciono y
@@ -16,6 +18,10 @@ export default function Profile(props: any) {
      */
     const changeImage = (images: Object) => {
         console.log(images);
+    };
+
+    const goToEdit = () => {
+        navigation.navigate("editProfile");
     };
 
     return (
@@ -34,6 +40,7 @@ export default function Profile(props: any) {
                                 buttonStyle={styles.btnEdit}
                                 title="Editar información"
                                 type="clear"
+                                onPress={goToEdit}
                                 titleStyle={styles.btnTitle}
                             />
                         ) : (
