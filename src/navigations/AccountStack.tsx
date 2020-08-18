@@ -38,13 +38,7 @@ function AccountStack(props: any) {
                 }}
             />
 
-            <Stack.Screen
-                name="editProfile"
-                component={EditProfile}
-                options={{
-                    title: "Editar perfil",
-                }}
-            />
+            <Stack.Screen name="editProfile" component={EditProfile} />
         </Stack.Navigator>
     ) : (
         <Stack.Navigator
