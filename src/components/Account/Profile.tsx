@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     btnEditContainer: {
-        marginVertical: 20,
+        marginTop: 20,
+        marginBottom: 10,
         width: "95%",
     },
     btnEdit: {
