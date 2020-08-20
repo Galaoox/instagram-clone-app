@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Input } from "react-native-elements";
+import { StyleSheet, View, Text } from "react-native";
+import { Input, Avatar } from "react-native-elements";
 import { Formik, FormikConfig } from "formik";
 import { nameIcon, userIcon, bioIcon, webIcon } from "../../utils/icons";
+import { colors } from "../../utils/theme";
 
 interface IFormEditProfileProps {
     formik: FormikConfig<{
@@ -22,12 +23,27 @@ export default function FormEditProfile(props: any) {
             touched,
             errors,
             setFieldTouched,
-            values: { name, user, biography, webSite },
+            values: { name, user, biography, webSite, imageUrl },
         },
     } = props;
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
             <View>
+                <View style={styles.containerAvatar}>
+                    <Avatar
+                        rounded
+                        size="large"
+                        containerStyle={styles.avatar}
+                        source={
+                            imageUrl
+                                ? { uri: imageUrl }
+                                : require("../../../assets/avatar-default.jpg")
+                        }
+                    />
+                    <Text style={styles.textAvatar}>
+                        Cambiar foto de perfil
+                    </Text>
+                </View>
                 <Input
                     label="Nombre"
                     labelStyle={styles.labelInput}
@@ -94,5 +110,21 @@ const styles = StyleSheet.create({
     },
     labelInput: {
         color: "black",
+    },
+    containerAvatar: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-around",
+        alignItems: "center",
+        marginTop: 30,
+        marginBottom: 20,
+    },
+    avatar: {
+        marginRight: 20,
+    },
+    textAvatar: {
+        color: colors.principal,
+        fontSize: 18,
+        marginTop: 10,
     },
 });
