@@ -5,6 +5,9 @@ import { colors } from "../../utils/theme";
 import HeaderButton from "../../components/Header/CloseButton";
 import FormEditProfile from "../../components/Account/FormEditProfile";
 import { useFormik } from "formik";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import * as yup from "yup";
+import customMessage from "../../utils/customMessage";
 
 interface IEditProfileProps {
     navigation: NavigationProp<ParamListBase>;
@@ -12,20 +15,26 @@ interface IEditProfileProps {
 
 export default function EditProfile(props: IEditProfileProps) {
     const { navigation } = props;
+    /**
+     * encargado de obtener los valores del formulario y enviar la informacion a la api
+     * @param values valor de formulario
+     */
     const submit = (values: any) => {
         console.log("on submit test", values);
     };
+
     // Se uso el hook de formik para poder obtener los valores del formulario desde afuera
     const formik = useFormik({
         initialValues: {
-            name: "pruebas",
-            user: "pruebas",
-            biography: "pruebas",
-            webSite: "pruebas",
+            name: "",
+            user: "",
+            biography: "",
+            webSite: "",
         },
         onSubmit: submit,
+        validationSchema: validatorSchema(),
     });
-
+    // configuracion de los iconos del header
     navigation.setOptions({
         title: "Editar perfil",
         headerLeft: () => <HeaderButton name="close" onPress={goBack} />,
@@ -35,21 +44,25 @@ export default function EditProfile(props: IEditProfileProps) {
                 name="check"
                 color={colors.principal}
                 onPress={formik.handleSubmit}
+                disabled={!formik.isValid}
             />
         ),
         headerRightContainerStyle: styles.checkHeaderContainer,
     });
 
     const goBack = () => navigation.goBack();
-
+    console.log(formik.touched, formik.errors.user);
     return (
-        <View>
+        <KeyboardAwareScrollView style={styles.container}>
             <FormEditProfile formik={formik} />
-        </View>
+        </KeyboardAwareScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "#ffff",
+    },
     closeHeaderContainer: {
         marginLeft: 10,
     },
@@ -57,3 +70,29 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
 });
+
+/**
+ * Retorna el esquema de validaciones del formulario
+ */
+function validatorSchema() {
+    const { required, max, min } = customMessage;
+    return yup.object().shape({
+        name: yup
+            .string()
+            .max(100, max + 100)
+            .required(required),
+        user: yup
+            .string()
+            .min(4, min + 4)
+            .max(10, max + 10)
+            .required(required),
+        biography: yup
+            .string()
+            .max(150, max + 150)
+            .required(required),
+        webSite: yup
+            .string()
+            .max(150, max + 150)
+            .required(required),
+    });
+}
