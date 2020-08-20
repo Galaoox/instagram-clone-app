@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { colors } from "../../utils/theme";
 import HeaderButton from "../../components/Header/CloseButton";
+import FormEditProfile from "../../components/Account/FormEditProfile";
 
 interface IEditProfileProps {
     navigation: NavigationProp<ParamListBase>;
@@ -32,7 +33,7 @@ export default function EditProfile(props: IEditProfileProps) {
 
     return (
         <View>
-            <Text>EditProfile...</Text>
+            <FormEditProfile />
         </View>
     );
 }
