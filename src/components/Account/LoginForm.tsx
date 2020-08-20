@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, IconProps, Button } from "react-native-elements";
-import { passwordIcon, emailIcon, colors } from "../../utils/theme";
+import { passwordIcon, emailIcon } from "../../utils/icons";
+import { colors } from "../../utils/theme";
 import { connect } from "react-redux";
 import { login } from "../../redux/actions/session.actions";
 import { useNavigation } from "@react-navigation/native";
