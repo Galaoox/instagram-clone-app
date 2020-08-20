@@ -1,29 +1,32 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { Input } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import * as yup from "yup";
-import { Formik } from "formik";
+import { Formik, FormikProps, FormikConfig } from "formik";
 import { nameIcon, userIcon, bioIcon, webIcon } from "../../utils/icons";
 
-export default function FormEditProfile() {
-    const onSubmit = () => {
-        console.log("onSubmit");
-    };
+interface IFormEditProfileProps {
+    formik: FormikConfig<{
+        name: string;
+        user: string;
+        biography: string;
+        webSite: string;
+    }>;
+}
 
+export default function FormEditProfile(props: any) {
+    const {
+        formik: { initialValues, handleSubmit },
+    } = props;
     return (
         <KeyboardAwareScrollView>
-            <Formik
-                initialValues={{
-                    name: "",
-                    user: "",
-                    biography: "",
-                    webSite: "",
-                }}
-                onSubmit={onSubmit}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {(props) => {
-                    console.log(props);
+                    const {
+                        handleChange,
+                        values: { name, user, biography, webSite },
+                    } = props;
                     return (
                         <View>
                             <Input
@@ -31,13 +34,16 @@ export default function FormEditProfile() {
                                 labelStyle={styles.labelInput}
                                 placeholder="Nombre"
                                 rightIcon={nameIcon}
-                                onChangeText={props.handleChange("name")}
+                                onChangeText={handleChange("name")}
+                                value={name}
                             />
                             <Input
                                 label="Usuario"
                                 labelStyle={styles.labelInput}
                                 placeholder="Usuario"
                                 rightIcon={userIcon}
+                                value={user}
+                                onChangeText={handleChange("user")}
                             />
                             {/* TODO: CAMBIAR ICONO DEL MOCKUP */}
                             <Input
@@ -45,12 +51,17 @@ export default function FormEditProfile() {
                                 labelStyle={styles.labelInput}
                                 placeholder="Biografia"
                                 rightIcon={bioIcon}
+                                value={biography}
+                                multiline
+                                onChangeText={handleChange("biography")}
                             />
                             <Input
                                 label="Sitio web"
                                 labelStyle={styles.labelInput}
                                 placeholder="Sitio web"
                                 rightIcon={webIcon}
+                                value={webSite}
+                                onChangeText={handleChange("webSite")}
                             />
                         </View>
                     );
