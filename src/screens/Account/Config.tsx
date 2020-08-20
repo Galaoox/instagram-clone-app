@@ -1,52 +1,124 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, Text, StyleSheet } from "react-native";
+import { Input, Button, ListItem } from "react-native-elements";
 // Redux
 import { connect } from "react-redux";
 import { login, clear } from "../../redux/actions/session.actions";
+import { SCREEN, colors } from "../../utils/theme";
+import { FlatList } from "react-native-gesture-handler";
 
 function Config(props: any) {
-    const { user, login, clear } = props;
-    const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const { clear } = props;
+    const [renderComponent, setRenderComponent] = useState<any>(null);
 
-    const submitLogin = () => {
-        setLoading(true);
-        login({ email, password })
-            .then((res: any) => {
-                setLoading(false);
-                Alert.alert("confirmacion", "Iniciaste sesión correctamente");
-                // Se puede enviar a otra screen
-            })
-            .catch((err: any) => {
-                setLoading(false);
-                Alert.alert("Error", err.message);
-            });
-    };
     const deleteSession = () => {
         clear();
     };
 
+    const selectedComponent = (key: string) => {
+        switch (key) {
+            case "changeEmail":
+                setRenderComponent(<Text>Modal changeEmail</Text>);
+
+                break;
+            case "changePassword":
+                setRenderComponent(<Text>Modal changePassword</Text>);
+                break;
+
+            default:
+                setRenderComponent(null);
+                break;
+        }
+    };
+    const menuOptions = generateOptions(selectedComponent);
+
     return (
-        <View>
-            <Text>Nombre usuario: {user.name}</Text>
-            <Input
-                label="correo"
-                placeholder="correo"
-                onChange={(event) => setEmail(event.nativeEvent.text)}
+        <View style={styles.container}>
+            {menuOptions.map((menu, index) => (
+                <ListItem
+                    key={index}
+                    title={menu.title}
+                    leftIcon={{
+                        type: menu.iconType,
+                        name: menu.iconNameLeft,
+                        color: menu.iconColorLeft,
+                    }}
+                    rightIcon={{
+                        type: menu.iconType,
+                        name: menu.iconNameRight,
+                        color: menu.iconColorRight,
+                    }}
+                    containerStyle={styles.menuItem}
+                    onPress={menu.onPress}
+                />
+            ))}
+            <Button
+                containerStyle={styles.btnCloseContainer}
+                buttonStyle={styles.btnClose}
+                title="Cerrar sesión"
+                type="clear"
+                onPress={() => deleteSession()}
+                titleStyle={styles.btnTitle}
             />
-            <Input
-                label="contra"
-                placeholder="contra"
-                onChange={(event) => setPassword(event.nativeEvent.text)}
-            />
-            <Button onPress={submitLogin} title="iniciar sesion" />
-            <Button onPress={deleteSession} title="eliminar sesion" />
         </View>
     );
 }
-const styles = StyleSheet.create({});
+
+function generateOptions(selectedComponent: any) {
+    return [
+        {
+            title: "Cambiar Correo Electronico",
+            iconType: "material-community",
+            iconNameLeft: "at",
+            iconColorLeft: colors.inactive,
+            iconNameRight: "chevron-right",
+            iconColorRight: colors.inactive,
+            onPress: () => selectedComponent("changePassword"),
+        },
+        {
+            title: "Cambiar Contraseña",
+            iconType: "material-community",
+            iconNameLeft: "lock-reset",
+            iconColorLeft: colors.inactive,
+            iconNameRight: "chevron-right",
+            iconColorRight: colors.inactive,
+            onPress: () => selectedComponent("password"),
+        },
+    ];
+}
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: "#ffff",
+        flex: 1,
+    },
+    btnCloseContainer: {
+        marginTop: 40,
+        marginBottom: 10,
+        width: "100%",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.39,
+        shadowRadius: 8.3,
+        elevation: 10,
+    },
+    btnClose: {
+        backgroundColor: "#ffff",
+
+        borderColor: "black",
+    },
+    btnTitle: {
+        color: colors.principal,
+        fontSize: 20,
+    },
+    menuItem: {
+        borderBottomWidth: 1,
+        borderBottomColor: "#3e3e3e",
+    },
+});
 // Adiciona a los props entrantes los elementos del reducer
 const mapStateToProps = (state: any) => {
     return {

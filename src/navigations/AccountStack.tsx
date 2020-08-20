@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Icon } from "react-native-elements";
+import { StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
 // Components
@@ -27,6 +27,7 @@ function AccountStack(props: any) {
                 options={{
                     title: "Cuenta",
                     headerRight: () => <NavigationIconConfig />,
+                    headerRightContainerStyle: styles.headerContainerRight,
                 }}
             />
 
@@ -34,7 +35,7 @@ function AccountStack(props: any) {
                 name="config"
                 component={Config}
                 options={{
-                    title: "Configuración",
+                    title: "Configuración Cuenta",
                 }}
             />
 
@@ -60,3 +61,9 @@ const mapStateToProps = (state: any) => {
 };
 // conecta el componente con lo que esta en el storage
 export default connect(mapStateToProps)(AccountStack);
+
+const styles = StyleSheet.create({
+    headerContainerRight: {
+        marginRight: 10,
+    },
+});
