@@ -30,6 +30,7 @@ export default function FormEditProfile(props: any) {
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
             <View>
                 <View style={styles.containerAvatar}>
+                    {/* TODO: AÑADIR FUNCIONALIDAD DE AGREGAR IMAGENES A EL ICONO DEL AVATAR Y EL TEXTO */}
                     <Avatar
                         rounded
                         size="large"
