@@ -4,6 +4,9 @@ import { Formik, FormikConfig } from "formik";
 import { Input, Button } from "react-native-elements";
 import { emailIcon, passwordIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
+import * as yup from "yup";
+import customMessage from "../../utils/customMessage";
+import { notEqual } from "../../utils/common";
 
 interface IChangeEmailFormProps {
     email: string;
@@ -14,15 +17,26 @@ export default function ChangeEmailForm(props: any) {
     const { email, setShowModal } = props;
     const [showPassword, setShowPassword] = useState(false);
 
+    /**
+     * envia los datos al backend para cambiar el correo electronico
+     * @param values valores del formulario que se devuelven en un json
+     */
+    const submit = (values: { newEmail: string; password: string }) => {
+        console.log(values);
+        setShowModal(false);
+    };
+
     return (
         <Formik
             initialValues={{
-                newEmail: email,
+                newEmail: "",
                 password: "",
             }}
             onSubmit={(values) => {
                 console.log(values);
+                setShowModal(false);
             }}
+            validationSchema={validatorSchema(email)}
         >
             {({
                 handleSubmit,
@@ -34,10 +48,11 @@ export default function ChangeEmailForm(props: any) {
                 values: { newEmail, password },
             }) => (
                 <View style={styles.container}>
+                    {/* NUEVO CORREO ELECTRONICO */}
                     <Input
-                        label="Nuevo electronico"
+                        label="Nuevo correo electronico"
                         labelStyle={styles.labelInput}
-                        placeholder="Correo electronico"
+                        placeholder="Nuevo correo electronico"
                         rightIcon={emailIcon}
                         onChangeText={handleChange("newEmail")}
                         onBlur={() => setFieldTouched("newEmail")}
@@ -48,6 +63,7 @@ export default function ChangeEmailForm(props: any) {
                                 : ""
                         }
                     />
+                    {/* CONTRASEÑA */}
                     <Input
                         label="Contraseña"
                         labelStyle={styles.labelInput}
@@ -63,7 +79,6 @@ export default function ChangeEmailForm(props: any) {
                                 : ""
                         }
                     />
-
                     <Button
                         containerStyle={styles.btnEditContainer}
                         buttonStyle={styles.btnEdit}
@@ -101,3 +116,20 @@ const styles = StyleSheet.create({
         color: "#ffff",
     },
 });
+
+/**
+ * Retorna el esquema de validaciones del formulario
+ */
+function validatorSchema(emailValue: string) {
+    const { required, email, notEqualEmail } = customMessage;
+    return yup.object().shape({
+        newEmail: yup
+            .string()
+            .email(email)
+            .test("not-equal", notEqualEmail, (newEmail: any) =>
+                notEqual(newEmail, emailValue)
+            )
+            .required(required),
+        password: yup.string().required(required),
+    });
+}

@@ -25,3 +25,7 @@ export async function openCamara() {
         }
     }
 }
+
+export function notEqual(value1: string | number, value2: string | number) {
+    return value1 !== value2;
+}
