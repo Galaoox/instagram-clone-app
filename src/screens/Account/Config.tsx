@@ -5,11 +5,13 @@ import { Input, Button, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import { login, clear } from "../../redux/actions/session.actions";
 import { SCREEN, colors } from "../../utils/theme";
-import { FlatList } from "react-native-gesture-handler";
+import Modal from "../../components/Modal";
+import ChangeEmailForm from "../../components/Account/ChangeEmailForm";
 
 function Config(props: any) {
     const { clear } = props;
     const [renderComponent, setRenderComponent] = useState<any>(null);
+    const [showModal, setShowModal] = useState(false);
 
     const deleteSession = () => {
         clear();
@@ -18,7 +20,12 @@ function Config(props: any) {
     const selectedComponent = (key: string) => {
         switch (key) {
             case "changeEmail":
-                setRenderComponent(<Text>Modal changeEmail</Text>);
+                setRenderComponent(
+                    <ChangeEmailForm
+                        email={"pruebas@gmail.com"}
+                        setShowModal={setShowModal}
+                    />
+                );
 
                 break;
             case "changePassword":
@@ -29,6 +36,7 @@ function Config(props: any) {
                 setRenderComponent(null);
                 break;
         }
+        setShowModal(true);
     };
     const menuOptions = generateOptions(selectedComponent);
 
@@ -60,6 +68,14 @@ function Config(props: any) {
                 onPress={() => deleteSession()}
                 titleStyle={styles.btnTitle}
             />
+
+            {renderComponent && (
+                <Modal
+                    isVisible={showModal}
+                    setIsVisible={setShowModal}
+                    children={renderComponent}
+                ></Modal>
+            )}
         </View>
     );
 }
@@ -73,7 +89,7 @@ function generateOptions(selectedComponent: any) {
             iconColorLeft: colors.inactive,
             iconNameRight: "chevron-right",
             iconColorRight: colors.inactive,
-            onPress: () => selectedComponent("changePassword"),
+            onPress: () => selectedComponent("changeEmail"),
         },
         {
             title: "Cambiar Contraseña",
@@ -82,7 +98,7 @@ function generateOptions(selectedComponent: any) {
             iconColorLeft: colors.inactive,
             iconNameRight: "chevron-right",
             iconColorRight: colors.inactive,
-            onPress: () => selectedComponent("password"),
+            onPress: () => selectedComponent("changePassword"),
         },
     ];
 }
