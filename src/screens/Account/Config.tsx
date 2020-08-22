@@ -7,6 +7,7 @@ import { login, clear } from "../../redux/actions/session.actions";
 import { SCREEN, colors } from "../../utils/theme";
 import Modal from "../../components/Modal";
 import ChangeEmailForm from "../../components/Account/ChangeEmailForm";
+import ChangePasswordForm from "../../components/Account/ChangePasswordForm";
 
 function Config(props: any) {
     const { clear } = props;
@@ -29,7 +30,9 @@ function Config(props: any) {
 
                 break;
             case "changePassword":
-                setRenderComponent(<Text>Modal changePassword</Text>);
+                setRenderComponent(
+                    <ChangePasswordForm setShowModal={setShowModal} />
+                );
                 break;
 
             default:
