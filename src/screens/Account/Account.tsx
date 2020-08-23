@@ -1,10 +1,24 @@
 import React, { useState } from "react";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+
 // Redux
 import { connect } from "react-redux";
-import Profile from "../../components/Account/Profile";
 // Components
+import Profile from "../../components/Account/Profile";
 
-function Account(props: any) {
+interface IAccountProps {
+    navigation: NavigationProp<ParamListBase>;
+    dispatch: Function;
+    route: Object;
+    user: Object;
+}
+
+function Account(props: IAccountProps) {
+    console.log(props);
+    const { dispatch, navigation, route, user } = props;
+    navigation.setOptions({
+        title: "usuariopersona", // TODO: CAMBIAR ESTE "USUARIO" POR EL "USUARIO" DE LA PERSONA QUE INICIO SESIÓN
+    });
     return <Profile />;
 }
 
