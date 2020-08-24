@@ -25,10 +25,15 @@ export default function GridPosts(props: { children: any }) {
     const { children } = props;
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingMorePosts, setloadingMorePosts] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [posts, setPosts] = useState<IPost[]>([]);
     const [totalPosts, setTotalPosts] = useState(0);
     const [startPosts, setStartPosts] = useState<IPost | null>(null); // paginacion de las solicitudes TODO: HACER LA INTERFAZ DE POST
     const navigation = useNavigation();
+
+    const loadPosts = () => {
+        setTimeout(() => setPosts(mockData()), 5000);
+    };
 
     /**
      * Obtiene las publicaciones del usuario
@@ -37,9 +42,21 @@ export default function GridPosts(props: { children: any }) {
     const getPosts = async () => {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
-        setLoading(true);
-        setPosts(mockData());
+        await setLoading(true);
+        loadPosts();
         setLoading(false);
+    };
+
+    /**
+     * recarga las solicitudes pendientes del usuario
+     *
+     */
+    const reloadList = async () => {
+        setRefreshing(true);
+        // ejecuta una peticion a la api y me las solicitudes de ese usuario
+        await loadPosts();
+        setRefreshing(false);
+        console.log("RELOAD");
     };
 
     /**
@@ -101,6 +118,8 @@ export default function GridPosts(props: { children: any }) {
             keyExtractor={(item, index) => index.toString()}
             onEndReachedThreshold={0.3}
             onEndReached={handleLoadMore}
+            refreshing={refreshing}
+            onRefresh={reloadList}
             numColumns={numColumns}
             initialNumToRender={6}
             ListHeaderComponent={children}

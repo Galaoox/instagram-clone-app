@@ -38,7 +38,7 @@ export default function Activity() {
     };
 
     /**
-     * Obtiene las solicitudes pendientes del usuario
+     * recarga las solicitudes pendientes del usuario
      *
      */
     const reloadList = async () => {
