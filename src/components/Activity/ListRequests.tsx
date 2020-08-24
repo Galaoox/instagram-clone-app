@@ -10,6 +10,8 @@ import { ListItem } from "react-native-elements";
 import { IRequest } from "../../models/request";
 import ButtonRequest from "./ButtonsRequest";
 import FooterList from "../FooterList";
+import ListEmptyView from "../ListEmptyView";
+import { colors } from "../../utils/theme";
 
 interface IListRequestProps {
     requests: IRequest[];
@@ -17,6 +19,7 @@ interface IListRequestProps {
     acceptRequest: Function;
     loading: boolean;
     handleLoadMore: any;
+    loadingMoreRequest: boolean;
 }
 
 export default function ListRequest(props: IListRequestProps) {
@@ -26,6 +29,7 @@ export default function ListRequest(props: IListRequestProps) {
         acceptRequest,
         loading,
         handleLoadMore,
+        loadingMoreRequest,
     } = props;
     const renderItem = ({ item }: any) => {
         return (
@@ -51,7 +55,7 @@ export default function ListRequest(props: IListRequestProps) {
     };
     return (
         <View>
-            {requests.length > 0 ? (
+            {true ? (
                 <FlatList
                     data={requests}
                     renderItem={renderItem}
@@ -59,7 +63,22 @@ export default function ListRequest(props: IListRequestProps) {
                     keyExtractor={(item, index) => index.toString()}
                     onEndReachedThreshold={0.5}
                     onEndReached={handleLoadMore}
-                    ListFooterComponent={<FooterList isLoading={loading} />}
+                    ListEmptyComponent={
+                        <ListEmptyView
+                            icon={{
+                                name: "heart-off",
+                                type: "material-community",
+                                color: colors.principal,
+                            }}
+                            text="No hay solicitudes"
+                        />
+                    }
+                    ListFooterComponent={
+                        <FooterList
+                            isLoading={loadingMoreRequest}
+                            isVisible={false}
+                        />
+                    }
                 />
             ) : (
                 <View style={styles.loader}>

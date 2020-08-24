@@ -1,20 +1,26 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
 
-export default function FooterList(props: {
+interface IFooterListProps {
     isLoading?: boolean;
     text?: string;
-}) {
-    const { isLoading = false, text = "..." } = props;
-    return isLoading ? (
-        <View style={styles.loader}>
-            <ActivityIndicator size="large" />
-        </View>
-    ) : (
-        <View style={styles.notFound}>
-            <Text>{text}</Text>
-        </View>
-    );
+    isVisible?: boolean;
+}
+
+export default function FooterList(props: IFooterListProps) {
+    const { isLoading = false, text = "...", isVisible = true } = props;
+    console.log(isLoading);
+    return isVisible ? (
+        isLoading ? (
+            <View style={styles.loader}>
+                <ActivityIndicator size="large" />
+            </View>
+        ) : (
+            <View style={styles.notFound}>
+                <Text>{text}</Text>
+            </View>
+        )
+    ) : null;
 }
 
 const styles = StyleSheet.create({

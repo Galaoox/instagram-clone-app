@@ -24,8 +24,20 @@ export default function GridPosts(props: { children: any }) {
     const { children } = props;
     const [loading, setLoading] = useState<boolean>(false);
     const [posts, setPosts] = useState<IPost[]>(mockData());
-
+    const [totalPosts, setTotalPosts] = useState(0);
+    const [startPosts, setStartPosts] = useState<IPost | null>(null); // paginacion de las solicitudes TODO: HACER LA INTERFAZ DE POST
     const navigation = useNavigation();
+
+    /**
+     * Obtiene las publicaciones del usuario
+     *
+     */
+    const getPosts = () => {
+        // ejecuta una peticion a la api y me las solicitudes de ese usuario
+        console.log("OBTENIENDO SOLICITUDES");
+        setPosts(mockData());
+    };
+
     /**
      * encargado de retornar el componente a mostrar en el flatlist
      * @param param0
@@ -51,6 +63,7 @@ export default function GridPosts(props: { children: any }) {
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             numColumns={numColumns}
+            initialNumToRender={6}
             ListHeaderComponent={children}
             ListFooterComponent={<FooterList isLoading={loading} />}
         />
@@ -77,7 +90,7 @@ const styles = StyleSheet.create({
 function mockData() {
     const data = [];
 
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < 9; index++) {
         data.push({
             id: index + 1,
             imageUrl: `https://picsum.photos/id/${index + 1}/200/300`,

@@ -8,6 +8,8 @@ export default function Activity() {
     const [requests, setRequests] = useState<IRequest[]>([]);
     const [totalRequest, setTotalRequest] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [loadingMoreRequest, setLoadingMoreRequest] = useState(false);
+
     const [startRequest, setStartRequest] = useState<IRequest | null>(null); // paginacion de las solicitudes
 
     const userId = 1; // TODO: USAR REDUX PARA OBTENER LA INFO DEL USUARIO Y ASI SABER EL ID DEL USER
@@ -19,14 +21,14 @@ export default function Activity() {
     const getRequest = () => {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
-        setRequests(mockData());
+        //setRequests(mockData());
     };
     /**
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalRequest = () => {
         console.log("obteniendo cantidad total de solicitudes");
-        setTotalRequest(30);
+        setTotalRequest(0);
     };
 
     /**
@@ -34,16 +36,16 @@ export default function Activity() {
      */
     const handleLoadMore = async () => {
         if (requests.length < totalRequest) {
-            setLoading(true);
+            setLoadingMoreRequest(true);
             console.log("OBTENIENDO MAS SOLICITUDES");
             const data = await mockData();
             data.length > 0
                 ? setStartRequest(data[data.length - 1])
-                : setLoading(false);
+                : setLoadingMoreRequest(false);
 
             setRequests([...requests, ...data]);
         } else {
-            setLoading(false);
+            setLoadingMoreRequest(false);
         }
     };
 
@@ -80,6 +82,7 @@ export default function Activity() {
                 acceptRequest={acceptRequest}
                 requests={requests}
                 loading={loading}
+                loadingMoreRequest={loadingMoreRequest}
                 handleLoadMore={handleLoadMore}
             />
         </View>
