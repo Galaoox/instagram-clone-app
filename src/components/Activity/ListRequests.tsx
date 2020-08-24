@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     FlatList,
@@ -20,6 +20,8 @@ interface IListRequestProps {
     loading: boolean;
     handleLoadMore: any;
     loadingMoreRequest: boolean;
+    refreshing: boolean;
+    reload: any;
 }
 
 export default function ListRequest(props: IListRequestProps) {
@@ -27,10 +29,13 @@ export default function ListRequest(props: IListRequestProps) {
         requests,
         cancelRequest,
         acceptRequest,
-        loading,
+        loading = false,
         handleLoadMore,
         loadingMoreRequest,
+        reload,
+        refreshing = false,
     } = props;
+    const [refresh, setRefresh] = useState(false);
     const renderItem = ({ item }: any) => {
         return (
             <ListItem
@@ -68,6 +73,8 @@ export default function ListRequest(props: IListRequestProps) {
                     keyExtractor={(item, index) => index.toString()}
                     onEndReachedThreshold={0.2}
                     onEndReached={handleLoadMore}
+                    refreshing={refreshing}
+                    onRefresh={reload}
                     ListEmptyComponent={
                         <ListEmptyView
                             icon={{

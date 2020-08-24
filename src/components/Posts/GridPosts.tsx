@@ -10,7 +10,7 @@ import {
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Image, Button } from "react-native-elements";
 import { size } from "lodash";
-import { SCREEN } from "../../utils/theme";
+import { SCREEN, colors } from "../../utils/theme";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
 
@@ -34,10 +34,12 @@ export default function GridPosts(props: { children: any }) {
      * Obtiene las publicaciones del usuario
      *
      */
-    const getPosts = () => {
+    const getPosts = async () => {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
+        setLoading(true);
         setPosts(mockData());
+        setLoading(false);
     };
 
     /**
@@ -102,7 +104,19 @@ export default function GridPosts(props: { children: any }) {
             numColumns={numColumns}
             initialNumToRender={6}
             ListHeaderComponent={children}
-            ListEmptyComponent={<ListEmptyView text="No hay publicaciones" />}
+            ListEmptyComponent={
+                loading ? (
+                    <View style={styles.loader}>
+                        <ActivityIndicator
+                            size="large"
+                            color={colors.principal}
+                        />
+                        <Text>Cargando restaurantes</Text>
+                    </View>
+                ) : (
+                    <ListEmptyView text="No hay publicaciones" />
+                )
+            }
             ListFooterComponent={
                 <FooterList
                     isLoading={loadingMorePosts}
@@ -127,6 +141,10 @@ const styles = StyleSheet.create({
     },
     touchableOpacityColor: {
         backgroundColor: "#838383",
+    },
+    loader: {
+        marginVertical: 10,
+        alignItems: "center",
     },
 });
 

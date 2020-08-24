@@ -8,11 +8,22 @@ export default function Activity() {
     const [requests, setRequests] = useState<IRequest[]>([]);
     const [totalRequest, setTotalRequest] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [loadingMoreRequest, setLoadingMoreRequest] = useState(false);
+    const [loadingMoreRequest, setLoadingMoreRequest] = useState(true);
+    const [reload, setReload] = useState(false);
 
     const [startRequest, setStartRequest] = useState<IRequest | null>(null); // paginacion de las solicitudes
 
     const userId = 1; // TODO: USAR REDUX PARA OBTENER LA INFO DEL USUARIO Y ASI SABER EL ID DEL USER
+    /**
+     * Encargado de obtener las solicitudes
+     *
+     */
+    const loadRequest = async (recargando = false) => {
+        // TODO: QUITAR ESE PARAMETRO "RECARGANDO"
+        setTimeout(() => {
+            setRequests(mockData(recargando));
+        }, 5000);
+    };
 
     /**
      * Obtiene las solicitudes pendientes del usuario
@@ -21,16 +32,28 @@ export default function Activity() {
     const getRequest = async () => {
         setLoading(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        console.log("OBTENIENDO SOLICITUDES");
-        setRequests(await mockData());
+        await loadRequest();
         setLoading(false);
+        console.log("OBTENIENDO SOLICITUDES");
+    };
+
+    /**
+     * Obtiene las solicitudes pendientes del usuario
+     *
+     */
+    const reloadList = async () => {
+        setReload(true);
+        // ejecuta una peticion a la api y me las solicitudes de ese usuario
+        await loadRequest(true);
+        setReload(false);
+        console.log("RELOAD");
     };
     /**
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalRequest = () => {
         console.log("obteniendo cantidad total de solicitudes");
-        setTotalRequest(30);
+        setTotalRequest(50);
     };
 
     /**
@@ -86,6 +109,8 @@ export default function Activity() {
                 loading={loading}
                 loadingMoreRequest={loadingMoreRequest}
                 handleLoadMore={handleLoadMore}
+                reload={reloadList}
+                refreshing={reload}
             />
         </View>
     );
@@ -98,11 +123,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mockData() {
+function mockData(recargando = false) {
     const data = [];
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 6; index++) {
         data.push({
-            username: "ernestheaney",
+            username: recargando ? "galaoox" : "ernestheaney",
             avatarUrl: `https://picsum.photos/id/${index + 1}/200/300`,
             name: "Sheila Reinger",
             id: index + 1,
