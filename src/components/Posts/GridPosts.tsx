@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Image, Button } from "react-native-elements";
 import { size } from "lodash";
 import { SCREEN } from "../../utils/theme";
+import FooterList from "../FooterList";
 
 interface IPost {
     id: number;
@@ -57,37 +58,9 @@ export default function GridPosts(props: { children: any }) {
 }
 
 /**
- *  Componente encargado de mostrar el footer de la lista
- *  mostrara un "spinner" o la frase "No hay mas publicaciones"
- *  dependiendo de isLoading
- * @param props
- */
-function FooterList(props: { isLoading: boolean }) {
-    const { isLoading } = props;
-    return isLoading ? (
-        <View style={styles.loaderPosts}>
-            <ActivityIndicator size="large" />
-        </View>
-    ) : (
-        <View style={styles.notFoundPosts}>
-            <Text>No hay mas publicaciones</Text>
-        </View>
-    );
-}
-
-/**
  * Constante encargada de los estilos del componente
  */
 const styles = StyleSheet.create({
-    loaderPosts: {
-        marginVertical: 10,
-        alignItems: "center",
-    },
-    notFoundPosts: {
-        marginTop: 10,
-        marginBottom: 20,
-        alignItems: "center",
-    },
     imagePost: {
         aspectRatio: 1,
         flex: 1 / numColumns,
