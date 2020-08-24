@@ -18,17 +18,19 @@ export default function Activity() {
      * Obtiene las solicitudes pendientes del usuario
      *
      */
-    const getRequest = () => {
+    const getRequest = async () => {
+        setLoading(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
-        //setRequests(mockData());
+        setRequests(await mockData());
+        setLoading(false);
     };
     /**
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalRequest = () => {
         console.log("obteniendo cantidad total de solicitudes");
-        setTotalRequest(0);
+        setTotalRequest(30);
     };
 
     /**

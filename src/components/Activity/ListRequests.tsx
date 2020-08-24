@@ -55,7 +55,12 @@ export default function ListRequest(props: IListRequestProps) {
     };
     return (
         <View>
-            {true ? (
+            {loading ? (
+                <View style={styles.loader}>
+                    <ActivityIndicator size="large" color={colors.principal} />
+                    <Text>Cargando restaurantes</Text>
+                </View>
+            ) : (
                 <FlatList
                     data={requests}
                     renderItem={renderItem}
@@ -76,15 +81,10 @@ export default function ListRequest(props: IListRequestProps) {
                     ListFooterComponent={
                         <FooterList
                             isLoading={loadingMoreRequest}
-                            isVisible={false}
+                            isVisible={requests.length > 0}
                         />
                     }
                 />
-            ) : (
-                <View style={styles.loader}>
-                    <ActivityIndicator size="large" />
-                    <Text>Cargando restaurantes</Text>
-                </View>
             )}
         </View>
     );

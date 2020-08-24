@@ -1,5 +1,6 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
+import { colors } from "../utils/theme";
 
 interface IFooterListProps {
     isLoading?: boolean;
@@ -9,11 +10,10 @@ interface IFooterListProps {
 
 export default function FooterList(props: IFooterListProps) {
     const { isLoading = false, text = "...", isVisible = true } = props;
-    console.log(isLoading);
     return isVisible ? (
         isLoading ? (
             <View style={styles.loader}>
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large" color={colors.principal} />
             </View>
         ) : (
             <View style={styles.notFound}>
