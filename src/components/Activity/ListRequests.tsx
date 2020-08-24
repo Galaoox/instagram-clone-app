@@ -64,9 +64,9 @@ export default function ListRequest(props: IListRequestProps) {
                 <FlatList
                     data={requests}
                     renderItem={renderItem}
-                    initialNumToRender={7}
+                    initialNumToRender={10}
                     keyExtractor={(item, index) => index.toString()}
-                    onEndReachedThreshold={0.5}
+                    onEndReachedThreshold={0.2}
                     onEndReached={handleLoadMore}
                     ListEmptyComponent={
                         <ListEmptyView

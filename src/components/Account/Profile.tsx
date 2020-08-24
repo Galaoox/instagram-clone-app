@@ -68,6 +68,7 @@ export default function Profile(props: any) {
 }
 const styles = StyleSheet.create({
     view: {
+        flex: 1,
         backgroundColor: "#ffff",
     },
     viewButton: {
@@ -106,5 +107,13 @@ const styles = StyleSheet.create({
         backgroundColor: "black",
         width: SCREEN.WIDTH,
         height: 1,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.39,
+        shadowRadius: 5.3,
+        elevation: 3,
     },
 });

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 
 function mockData() {
     const data = [];
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < 10; index++) {
         data.push({
             username: "ernestheaney",
             avatarUrl: `https://picsum.photos/id/${index + 1}/200/300`,

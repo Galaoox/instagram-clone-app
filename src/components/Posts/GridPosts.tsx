@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     View,
     FlatList,
@@ -7,11 +7,12 @@ import {
     Text,
     TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Image, Button } from "react-native-elements";
 import { size } from "lodash";
 import { SCREEN } from "../../utils/theme";
 import FooterList from "../FooterList";
+import ListEmptyView from "../ListEmptyView";
 
 interface IPost {
     id: number;
@@ -23,7 +24,8 @@ const numColumns = 3;
 export default function GridPosts(props: { children: any }) {
     const { children } = props;
     const [loading, setLoading] = useState<boolean>(false);
-    const [posts, setPosts] = useState<IPost[]>(mockData());
+    const [loadingMorePosts, setloadingMorePosts] = useState(false);
+    const [posts, setPosts] = useState<IPost[]>([]);
     const [totalPosts, setTotalPosts] = useState(0);
     const [startPosts, setStartPosts] = useState<IPost | null>(null); // paginacion de las solicitudes TODO: HACER LA INTERFAZ DE POST
     const navigation = useNavigation();
@@ -36,6 +38,32 @@ export default function GridPosts(props: { children: any }) {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
         setPosts(mockData());
+    };
+
+    /**
+     * Obtiene la cantidad total de solicitudes que tiene el usuario
+     */
+    const getTotalPosts = () => {
+        console.log("obteniendo cantidad total de publicaciones");
+        setTotalPosts(60);
+    };
+
+    /**
+     * Obtiene progresivamente las solicitudes
+     */
+    const handleLoadMore = async () => {
+        if (posts.length < totalPosts) {
+            setloadingMorePosts(true);
+            console.log("OBTENIENDO MAS PUBLICACIONES");
+            const data = await mockData();
+            data.length > 0
+                ? setStartPosts(data[data.length - 1])
+                : setloadingMorePosts(false);
+
+            setPosts([...posts, ...data]);
+        } else {
+            setloadingMorePosts(false);
+        }
     };
 
     /**
@@ -57,15 +85,30 @@ export default function GridPosts(props: { children: any }) {
         );
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            getPosts();
+            getTotalPosts();
+        }, [])
+    );
+
     return (
         <FlatList
             data={posts}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
+            onEndReachedThreshold={0.3}
+            onEndReached={handleLoadMore}
             numColumns={numColumns}
             initialNumToRender={6}
             ListHeaderComponent={children}
-            ListFooterComponent={<FooterList isLoading={loading} />}
+            ListEmptyComponent={<ListEmptyView text="No hay publicaciones" />}
+            ListFooterComponent={
+                <FooterList
+                    isLoading={loadingMorePosts}
+                    isVisible={posts.length > 0}
+                />
+            }
         />
     );
 }
@@ -90,7 +133,7 @@ const styles = StyleSheet.create({
 function mockData() {
     const data = [];
 
-    for (let index = 0; index < 9; index++) {
+    for (let index = 0; index < 15; index++) {
         data.push({
             id: index + 1,
             imageUrl: `https://picsum.photos/id/${index + 1}/200/300`,
