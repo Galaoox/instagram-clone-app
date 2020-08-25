@@ -7,14 +7,14 @@ import {
     Text,
 } from "react-native";
 import { ListItem } from "react-native-elements";
-import { IRequest } from "../../models/request";
+import { IUser } from "../../models/user";
 import ButtonRequest from "./ButtonsRequest";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
 import { colors } from "../../utils/theme";
 
 interface IListRequestProps {
-    requests: IRequest[];
+    requests: IUser[];
     cancelRequest: Function;
     acceptRequest: Function;
     loading: boolean;

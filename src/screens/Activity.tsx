@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { View, StyleSheet } from "react-native";
 import ListRequest from "../components/Activity/ListRequests";
-import { IRequest } from "../models/request";
+import { IRequest } from "../models/user";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function Activity() {

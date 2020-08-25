@@ -11,7 +11,7 @@ export default function SearchStack() {
                 name="search"
                 component={Search}
                 options={{
-                    title: "Busqueda",
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>

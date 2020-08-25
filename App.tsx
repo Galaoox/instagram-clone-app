@@ -1,5 +1,5 @@
 import React from "react";
-import { AppRegistry } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 /*redux configuration*/
 import { applyMiddleware, compose, createStore } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
@@ -34,7 +34,9 @@ export default function App() {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <Navigation />
+                <SafeAreaProvider>
+                    <Navigation />
+                </SafeAreaProvider>
             </PersistGate>
         </Provider>
     );

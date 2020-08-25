@@ -1,4 +1,4 @@
-export interface IRequest {
+export interface IUser {
     name: string;
     username: string;
     avatarUrl: string;
