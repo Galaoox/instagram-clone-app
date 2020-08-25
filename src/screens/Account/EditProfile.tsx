@@ -51,7 +51,6 @@ export default function EditProfile(props: IEditProfileProps) {
     });
 
     const goBack = () => navigation.goBack();
-    console.log(formik.touched, formik.errors.user);
     return (
         <KeyboardAwareScrollView style={styles.container}>
             <FormEditProfile formik={formik} />

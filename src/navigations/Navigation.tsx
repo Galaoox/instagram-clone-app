@@ -6,13 +6,14 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 import { colors } from "../utils/theme";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 // Stacks
 import HomeStack from "./HomeStack";
 import SearchStack from "./SearchStack";
 import ActivityStack from "./ActivityStack";
 import AccountStack from "./AccountStack";
 import { connect } from "react-redux";
+import PostStack from "./PostStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,9 +61,9 @@ function Navigation(props: any) {
                     {user && (
                         <Tab.Screen
                             name="post"
-                            component={SearchStack}
+                            component={PostStack}
                             options={{
-                                tabBarLabel: "",
+                                tabBarLabel: "Crear publicación",
                             }}
                         />
                     )}

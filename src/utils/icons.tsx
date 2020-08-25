@@ -42,3 +42,9 @@ export const webIcon: IconProps = {
     color: colors.principal,
     type: "material-community",
 };
+
+export const descriptionIcon: IconProps = {
+    name: "text",
+    color: colors.principal,
+    type: "material-community",
+};
