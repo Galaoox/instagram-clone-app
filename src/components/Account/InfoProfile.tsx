@@ -59,7 +59,7 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
                 />
                 <View style={styles.textGroup}>
                     <Text>{posts}</Text>
-                    <Text>Posts</Text>
+                    <Text>Publicaciones</Text>
                 </View>
                 <View style={styles.textGroup}>
                     <Text>{followers}</Text>
