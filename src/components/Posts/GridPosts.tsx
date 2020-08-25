@@ -32,7 +32,7 @@ export default function GridPosts(props: { children: any }) {
     const navigation = useNavigation();
 
     const loadPosts = () => {
-        setTimeout(() => setPosts(mockData()), 5000);
+        setPosts(mockData());
     };
 
     /**
@@ -43,8 +43,11 @@ export default function GridPosts(props: { children: any }) {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         console.log("OBTENIENDO SOLICITUDES");
         await setLoading(true);
-        loadPosts();
-        setLoading(false);
+
+        setTimeout(() => {
+            loadPosts();
+            setLoading(false);
+        }, 5000);
     };
 
     /**
@@ -54,9 +57,11 @@ export default function GridPosts(props: { children: any }) {
     const reloadList = async () => {
         setRefreshing(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        await loadPosts();
-        setRefreshing(false);
-        console.log("RELOAD");
+        setTimeout(() => {
+            loadPosts();
+            console.log("RELOAD");
+            setRefreshing(false);
+        }, 5000);
     };
 
     /**
