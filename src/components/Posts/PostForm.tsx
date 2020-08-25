@@ -14,6 +14,7 @@ export default function PostForm(props: any) {
             touched,
             errors,
             setFieldTouched,
+            isValid,
             values: { description },
         },
     } = props;
@@ -39,6 +40,7 @@ export default function PostForm(props: any) {
                     containerStyle={styles.btnEditContainer}
                     buttonStyle={styles.btnEdit}
                     title="Publicar"
+                    disabled={!isValid}
                     onPress={() => handleSubmit()}
                     titleStyle={styles.btnTitle}
                 />
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     },
     btnEditContainer: {
         marginTop: 20,
-        marginBottom: 10,
+        marginBottom: 30,
         width: "95%",
     },
     btnEdit: {

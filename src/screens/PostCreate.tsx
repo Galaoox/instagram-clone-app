@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Loading from "../components/Loading";
 import PostForm from "../components/Posts/PostForm";
 import { useFormik } from "formik";
@@ -19,11 +19,11 @@ export default function PostCreate() {
         validationSchema: validatorSchema(),
     });
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <ImagePost image={image} setImage={setImage} />
             <PostForm setImage={setImage} image={image} formik={formik} />
             <Loading isVisible={loading} text="Creando publicacón" />
-        </View>
+        </ScrollView>
     );
 }
 
