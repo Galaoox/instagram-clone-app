@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { passwordIcon, emailIcon, nameIcon, userIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
+import { AuthContext } from "../../components/context";
 
 export default function RegisterForm(props: any) {
-    // TODO : crear los types
     const { toastRef, login } = props;
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
+    const { signUp } = useContext(AuthContext);
     /**
      * Encargado de realizar la solicitud http al action "login"
      * enviando como parametro email y password
      */
     const submit = () => {
-        login({ email, password });
+        signUp("email", "name", "userName", "password");
     };
 
     return (
