@@ -17,7 +17,7 @@ export default function Register(props: IRegisterProps) {
     //navigation.
     const toastRef = useRef();
     return (
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView style={styles.container}>
             <View style={styles.viewBackground} />
             <View style={styles.containerLogo}>
                 <Image
@@ -34,8 +34,10 @@ export default function Register(props: IRegisterProps) {
 }
 
 const styles = StyleSheet.create({
-    containerLogo: {
+    container: {
         flex: 1,
+    },
+    containerLogo: {
         alignItems: "center",
         justifyContent: "center",
     },

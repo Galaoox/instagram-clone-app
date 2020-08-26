@@ -61,7 +61,6 @@ export default function RegisterForm(props: any) {
 
 const styles = StyleSheet.create({
     formContainer: {
-        flex: 1,
         alignItems: "center",
         justifyContent: "center",
         shadowColor: "#000",
