@@ -9,4 +9,10 @@ export const AuthContext = createContext({
         userName: string,
         password: string
     ) => {},
+    loginState: {
+        isLoading: true,
+        userName: null,
+        name: null,
+        userToken: null,
+    },
 });

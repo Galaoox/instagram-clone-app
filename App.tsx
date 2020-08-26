@@ -75,7 +75,7 @@ export default function App() {
                 let name;
                 userToken = "testToken";
                 userName = "erickavn1984";
-                name = "Erick Andre Vergara Noriega";
+                name = "Hannyker Arturo Vergara Noriega";
                 try {
                     await AsyncStorage.setItem("userToken", userToken);
                 } catch (error) {
@@ -99,9 +99,10 @@ export default function App() {
             ) => {
                 let userToken = "testToken";
                 userName = "erickavn1984";
-                name = "Erick Andre Vergara Noriega";
+                name = "Hannyker Andre Vergara Noriega";
                 dispatch({ type: "LOGIN", userName, token: userToken, name });
             },
+            loginState,
         }),
         []
     );

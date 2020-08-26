@@ -8,6 +8,7 @@ import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
 
 export default function Profile(props: any) {
+    const { userName, name } = props;
     const navigation = useNavigation();
     const isUser = true; // bandera que indica si es el usuario que inicio sesion
 
@@ -32,7 +33,7 @@ export default function Profile(props: any) {
                 EL FLATLIST CON  EL SCROLLVIEW
                 */}
                 <View>
-                    <InfoProFile changeImage={changeImage} />
+                    <InfoProFile name={name} changeImage={changeImage} />
                     <View style={styles.viewButton}>
                         {isUser ? (
                             <Button
