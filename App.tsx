@@ -1,43 +1,59 @@
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-/*redux configuration*/
-import { applyMiddleware, compose, createStore } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
-import AsyncStorage from "@react-native-community/async-storage";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import { createLogger } from "redux-logger";
-import reducers from "./src/redux/reducers";
-import thunk from "redux-thunk";
 
 // Components
 import Navigation from "./src/navigations/Navigation";
-// TODO: AVERIGUAR PARA QUE FUNCIONA
-
-const loggerMiddleware = createLogger({ predicate: () => false });
-const persistedReducer = persistReducer(
-    { key: "root", storage: AsyncStorage, blacklist: ["filter", "modals"] },
-    reducers
-);
-// TODO: AVERIGUAR PARA QUE FUNCIONA
-function configureStore(initialState: any) {
-    const enhancer = compose(applyMiddleware(thunk, loggerMiddleware));
-    return createStore(persistedReducer, initialState, enhancer);
-}
-// TODO: AVERIGUAR PARA QUE FUNCIONA
-
-const initialState = {};
-export const store = configureStore(initialState);
-export const persistor = persistStore(store);
+import { ActivityIndicator, View } from "react-native";
+//CONTEXT
+import { AuthContext } from "./src/components/context";
 
 export default function App() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [userToken, setUserToken] = useState<string | null>(null);
+
+    const authContext = useMemo(
+        () => ({
+            signIn: () => {
+                setUserToken("tesdads");
+                setIsLoading(false);
+            },
+            signOut: () => {
+                setUserToken(null);
+                setIsLoading(false);
+            },
+            signUp: () => {
+                setUserToken("tesdads");
+                setIsLoading(false);
+            },
+        }),
+        []
+    );
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+    }, []);
+
+    if (isLoading) {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <ActivityIndicator size="large" />
+            </View>
+        );
+    }
+
     return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <SafeAreaProvider>
-                    <Navigation />
-                </SafeAreaProvider>
-            </PersistGate>
-        </Provider>
+        <AuthContext.Provider value={authContext}>
+            <SafeAreaProvider>
+                <Navigation userToken={userToken} />
+            </SafeAreaProvider>
+        </AuthContext.Provider>
     );
 }

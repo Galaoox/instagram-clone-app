@@ -1,13 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import LoginForm from "../../components/Account/LoginForm";
 import { Image } from "react-native-elements";
-import Toast from "react-native-easy-toast";
 import { SCREEN, colors } from "../../utils/theme";
 import { useNavigation } from "@react-navigation/native";
+
 export default function Login() {
-    const toastRef = useRef();
     return (
         <ScrollView>
             <View style={styles.viewBackground} />
@@ -20,7 +18,7 @@ export default function Login() {
             </View>
 
             <View style={styles.viewContainer}>
-                <LoginForm toastRef={toastRef} />
+                <LoginForm />
                 <CreateAccount />
             </View>
         </ScrollView>

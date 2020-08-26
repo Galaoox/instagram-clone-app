@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer, createContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
     createBottomTabNavigator,
@@ -14,12 +14,14 @@ import ActivityStack from "./ActivityStack";
 import AccountStack from "./AccountStack";
 import { connect } from "react-redux";
 import PostStack from "./PostStack";
+import AsyncStorage from "@react-native-community/async-storage";
+import AuthStack from "./AuthStack";
 
 const Tab = createBottomTabNavigator();
+// Creo el context
 
-function Navigation(props: any) {
-    const { user } = props; // TODO CAMBIAR ESOS PROPS
-
+export default function Navigation(props: any) {
+    const { userToken } = props;
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive,
         activeTintColor: colors.principal,
@@ -28,15 +30,16 @@ function Navigation(props: any) {
     return (
         <SafeAreaProvider>
             <NavigationContainer>
-                <Tab.Navigator
-                    initialRouteName={user ? "home" : "account"}
-                    tabBarOptions={tabOptions}
-                    screenOptions={({ route }) => ({
-                        tabBarIcon: ({ color }) => screenOptions(route, color),
-                    })}
-                >
-                    {/* HOME STACK */}
-                    {user && (
+                {userToken ? (
+                    <Tab.Navigator
+                        initialRouteName="account"
+                        tabBarOptions={tabOptions}
+                        screenOptions={({ route }) => ({
+                            tabBarIcon: ({ color }) =>
+                                screenOptions(route, color),
+                        })}
+                    >
+                        {/* HOME STACK */}
                         <Tab.Screen
                             name="home"
                             component={HomeStack}
@@ -44,10 +47,8 @@ function Navigation(props: any) {
                                 tabBarLabel: "",
                             }}
                         />
-                    )}
 
-                    {/* SEARCH STACK */}
-                    {user && (
+                        {/* SEARCH STACK */}
                         <Tab.Screen
                             name="search"
                             component={SearchStack}
@@ -55,10 +56,8 @@ function Navigation(props: any) {
                                 tabBarLabel: "",
                             }}
                         />
-                    )}
 
-                    {/* POST STACK  CAMBIAR EL COMPONENTE*/}
-                    {user && (
+                        {/* POST STACK  CAMBIAR EL COMPONENTE*/}
                         <Tab.Screen
                             name="post"
                             component={PostStack}
@@ -66,10 +65,8 @@ function Navigation(props: any) {
                                 tabBarLabel: "Crear publicación",
                             }}
                         />
-                    )}
 
-                    {/* ACTIVITY STACK */}
-                    {user && (
+                        {/* ACTIVITY STACK */}
                         <Tab.Screen
                             name="activity"
                             component={ActivityStack}
@@ -77,18 +74,19 @@ function Navigation(props: any) {
                                 tabBarLabel: "",
                             }}
                         />
-                    )}
-                    {/* ACCOUNT STACK */}
+                        {/* ACCOUNT STACK */}
 
-                    <Tab.Screen
-                        name="account"
-                        component={AccountStack}
-                        options={{
-                            tabBarLabel: "",
-                            tabBarVisible: user,
-                        }}
-                    />
-                </Tab.Navigator>
+                        <Tab.Screen
+                            name="account"
+                            component={AccountStack}
+                            options={{
+                                tabBarLabel: "",
+                            }}
+                        />
+                    </Tab.Navigator>
+                ) : (
+                    <AuthStack />
+                )}
             </NavigationContainer>
         </SafeAreaProvider>
     );
@@ -128,12 +126,3 @@ function screenOptions(route: { name: string }, color: string) {
         />
     );
 }
-
-// Adiciona a los props entrantes los elementos del reducer
-const mapStateToProps = (state: any) => {
-    return {
-        user: state.session && state.session.user ? state.session.user : false,
-    }; // seleccionamos del reducer la info que llegara al componente
-};
-// conecta el componente con lo que esta en el storage
-export default connect(mapStateToProps)(Navigation);

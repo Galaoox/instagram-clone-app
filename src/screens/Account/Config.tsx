@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Input, Button, ListItem } from "react-native-elements";
+import React, { useState, useContext } from "react";
+import { View, StyleSheet } from "react-native";
+import { Button, ListItem } from "react-native-elements";
 // Redux
-import { connect } from "react-redux";
-import { login, clear } from "../../redux/actions/session.actions";
-import { SCREEN, colors } from "../../utils/theme";
+import { colors } from "../../utils/theme";
 import Modal from "../../components/Modal";
 import ChangeEmailForm from "../../components/Account/ChangeEmailForm";
 import ChangePasswordForm from "../../components/Account/ChangePasswordForm";
 
-function Config(props: any) {
-    const { clear } = props;
+import { AuthContext } from "../../components/context";
+
+export default function Config(props: any) {
+    const { navigation } = props;
+    const { signOut } = useContext(AuthContext);
     const [renderComponent, setRenderComponent] = useState<any>(null);
     const [showModal, setShowModal] = useState(false);
 
     const deleteSession = () => {
-        clear();
+        signOut();
     };
 
     const selectedComponent = (key: string) => {
@@ -138,11 +139,3 @@ const styles = StyleSheet.create({
         borderBottomColor: "#3e3e3e",
     },
 });
-// Adiciona a los props entrantes los elementos del reducer
-const mapStateToProps = (state: any) => {
-    return {
-        user: state.session && state.session.user ? state.session.user : false,
-    }; // seleccionamos del reducer la info que llegara al componente
-};
-// conecta el componente con lo que esta en el storage
-export default connect(mapStateToProps, { login, clear })(Config);

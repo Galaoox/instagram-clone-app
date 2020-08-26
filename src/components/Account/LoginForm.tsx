@@ -1,29 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, IconProps, Button } from "react-native-elements";
 import { passwordIcon, emailIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
 import { connect } from "react-redux";
-import { login } from "../../redux/actions/session.actions";
 import { useNavigation } from "@react-navigation/native";
-interface ILoginFormProps {
-    toastRef: any;
-    login: Function;
-}
+//CONTEXT
+import { AuthContext } from "../../components/context";
+interface ILoginFormProps {}
 
-function LoginForm(props: ILoginFormProps) {
-    const { toastRef, login } = props;
+export default function LoginForm(props: ILoginFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
     const navigation = useNavigation();
+    const { signIn } = useContext(AuthContext);
+
     /**
      * Encargado de realizar la peticion http al backend haciendo uso del
      * action "login" enviando como parametro "email" y "password"
      * y si es correcto el inicio de sesion ira a la screen account
      */
     const submit = () => {
-        login({ email, password }).then(() => navigation.navigate("account"));
+        signIn();
+        // login({ email, password }).then(() => navigation.navigate("account"));
     };
 
     return (
@@ -88,6 +88,3 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
 });
-
-// conecta el componente con lo que esta en el storage
-export default connect(null, { login })(LoginForm);

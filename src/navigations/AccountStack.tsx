@@ -12,15 +12,9 @@ import Config from "../screens/Account/Config";
 import EditProfile from "../screens/Account/EditProfile";
 
 const Stack = createStackNavigator();
-function AccountStack(props: any) {
-    const { user } = props;
-
-    return user ? (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: user,
-            }}
-        >
+export default function AccountStack(props: any) {
+    return (
+        <Stack.Navigator>
             <Stack.Screen
                 name="account"
                 component={Account}
@@ -41,26 +35,8 @@ function AccountStack(props: any) {
 
             <Stack.Screen name="editProfile" component={EditProfile} />
         </Stack.Navigator>
-    ) : (
-        <Stack.Navigator
-            screenOptions={{
-                headerShown: user,
-            }}
-        >
-            <Stack.Screen name="login" component={Login} />
-            <Stack.Screen name="register" component={Register} />
-        </Stack.Navigator>
     );
 }
-
-// Adiciona a los props entrantes los elementos del reducer
-const mapStateToProps = (state: any) => {
-    return {
-        user: state.session && state.session.user ? state.session.user : false,
-    }; // seleccionamos del reducer la info que llegara al componente
-};
-// conecta el componente con lo que esta en el storage
-export default connect(mapStateToProps)(AccountStack);
 
 const styles = StyleSheet.create({
     headerContainerRight: {

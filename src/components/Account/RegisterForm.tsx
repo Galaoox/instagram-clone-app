@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Input, IconProps, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { passwordIcon, emailIcon, nameIcon, userIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
-import { connect } from "react-redux";
-import { login } from "../../redux/actions/session.actions";
 
-function RegisterForm(props: any) {
+export default function RegisterForm(props: any) {
     // TODO : crear los types
     const { toastRef, login } = props;
     const [showPassword, setShowPassword] = useState(false);
@@ -93,6 +91,3 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
 });
-
-// conecta el componente con lo que esta en el storage
-export default connect(null, { login })(RegisterForm);
