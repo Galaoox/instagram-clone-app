@@ -15,9 +15,6 @@ interface IloginState {
 }
 
 export default function App() {
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [userToken, setUserToken] = useState<string | null>(null);
-
     const initialLoginState: IloginState = {
         isLoading: true,
         userName: null,

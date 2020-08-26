@@ -22,7 +22,7 @@ export default function LoginForm(props: ILoginFormProps) {
      * y si es correcto el inicio de sesion ira a la screen account
      */
     const submit = () => {
-        signIn();
+        signIn("asdasd", "asdasdas");
         // login({ email, password }).then(() => navigation.navigate("account"));
     };
 
@@ -56,7 +56,6 @@ export default function LoginForm(props: ILoginFormProps) {
 
 const styles = StyleSheet.create({
     formContainer: {
-        flex: 1,
         alignItems: "center",
         justifyContent: "center",
         marginTop: 30,

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import LoginForm from "../../components/Account/LoginForm";
 import { Image } from "react-native-elements";
 import { SCREEN, colors } from "../../utils/theme";
@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Login() {
     return (
-        <ScrollView>
+        <View style={styles.container}>
             <View style={styles.viewBackground} />
             <View style={styles.containerLogo}>
                 <Image
@@ -21,7 +21,7 @@ export default function Login() {
                 <LoginForm />
                 <CreateAccount />
             </View>
-        </ScrollView>
+        </View>
     );
 }
 
@@ -47,8 +47,8 @@ function CreateAccount() {
 }
 
 const styles = StyleSheet.create({
-    view: {
-        minHeight: "100%",
+    container: {
+        flex: 1,
         backgroundColor: "#f2f2f2",
     },
     viewBackground: {
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     containerLogo: {
-        flex: 1,
         alignItems: "center",
         justifyContent: "center",
     },
