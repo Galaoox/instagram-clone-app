@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
     createBottomTabNavigator,
@@ -12,9 +12,7 @@ import HomeStack from "./HomeStack";
 import SearchStack from "./SearchStack";
 import ActivityStack from "./ActivityStack";
 import AccountStack from "./AccountStack";
-import { connect } from "react-redux";
 import PostStack from "./PostStack";
-import AsyncStorage from "@react-native-community/async-storage";
 import AuthStack from "./AuthStack";
 import { UserContext } from "../components/context";
 
