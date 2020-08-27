@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-
-// Redux
-import { connect } from "react-redux";
 // Components
 import Profile from "../../components/Account/Profile";
+import { UserContext } from "../../components/context";
 
 interface IAccountProps {
     navigation: NavigationProp<ParamListBase>;
@@ -13,8 +11,12 @@ interface IAccountProps {
 
 export default function Account(props: IAccountProps) {
     const { navigation } = props;
-    navigation.setOptions({
-        title: "usuariopersona",
-    });
-    return <Profile />;
+
+    return (
+        <UserContext.Consumer>
+            {({ name, userName }) => (
+                <Profile name={name} userName={userName} />
+            )}
+        </UserContext.Consumer>
+    );
 }

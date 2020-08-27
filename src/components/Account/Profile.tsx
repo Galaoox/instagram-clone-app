@@ -10,6 +10,9 @@ import { SCREEN, colors } from "../../utils/theme";
 export default function Profile(props: any) {
     const { userName, name } = props;
     const navigation = useNavigation();
+    navigation.setOptions({
+        title: userName,
+    });
     const isUser = true; // bandera que indica si es el usuario que inicio sesion
 
     /**

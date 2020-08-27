@@ -5,11 +5,10 @@ import { UserContext } from "../components/context";
 export default function Home(props: any) {
     return (
         <UserContext.Consumer>
-            {(value) => {
-                console.log(value, "from home");
+            {({ name }) => {
                 return (
                     <View>
-                        <Text>HOme....</Text>
+                        <Text>Bienvenido {name}</Text>
                     </View>
                 );
             }}
