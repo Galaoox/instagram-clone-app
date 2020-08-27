@@ -12,7 +12,6 @@ interface IAccountProps {
 }
 
 export default function Account(props: IAccountProps) {
-    console.log(props);
     const { navigation } = props;
     navigation.setOptions({
         title: "usuariopersona",

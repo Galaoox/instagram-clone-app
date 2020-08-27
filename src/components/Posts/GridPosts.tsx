@@ -44,10 +44,10 @@ export default function GridPosts(props: { children: any }) {
         console.log("OBTENIENDO SOLICITUDES");
         await setLoading(true);
 
-        setTimeout(() => {
-            loadPosts();
-            setLoading(false);
-        }, 5000);
+        // setTimeout(() => {
+        //     loadPosts();
+        //     setLoading(false);
+        // }, 5000);
     };
 
     /**

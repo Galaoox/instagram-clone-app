@@ -1,19 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { AuthContext } from "../components/context";
+import { UserContext } from "../components/context";
 
 export default function Home(props: any) {
     return (
-        <AuthContext.Consumer>
+        <UserContext.Consumer>
             {(value) => {
-                console.log(value);
+                console.log(value, "from home");
                 return (
                     <View>
                         <Text>HOme....</Text>
                     </View>
                 );
             }}
-        </AuthContext.Consumer>
+        </UserContext.Consumer>
     );
 }
 

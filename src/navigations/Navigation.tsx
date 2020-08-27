@@ -16,79 +16,83 @@ import { connect } from "react-redux";
 import PostStack from "./PostStack";
 import AsyncStorage from "@react-native-community/async-storage";
 import AuthStack from "./AuthStack";
+import { UserContext } from "../components/context";
 
 const Tab = createBottomTabNavigator();
 // Creo el context
 
 export default function Navigation(props: any) {
-    const { userToken } = props;
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive,
         activeTintColor: colors.principal,
         showLabel: false,
     };
     return (
-        <SafeAreaProvider>
-            <NavigationContainer>
-                {userToken ? (
-                    <Tab.Navigator
-                        initialRouteName="account"
-                        tabBarOptions={tabOptions}
-                        screenOptions={({ route }) => ({
-                            tabBarIcon: ({ color }) =>
-                                screenOptions(route, color),
-                        })}
-                    >
-                        {/* HOME STACK */}
-                        <Tab.Screen
-                            name="home"
-                            component={HomeStack}
-                            options={{
-                                tabBarLabel: "",
-                            }}
-                        />
+        <UserContext.Consumer>
+            {({ userToken }) => (
+                <SafeAreaProvider>
+                    <NavigationContainer>
+                        {userToken ? (
+                            <Tab.Navigator
+                                initialRouteName="account"
+                                tabBarOptions={tabOptions}
+                                screenOptions={({ route }) => ({
+                                    tabBarIcon: ({ color }) =>
+                                        screenOptions(route, color),
+                                })}
+                            >
+                                {/* HOME STACK */}
+                                <Tab.Screen
+                                    name="home"
+                                    component={HomeStack}
+                                    options={{
+                                        tabBarLabel: "",
+                                    }}
+                                />
 
-                        {/* SEARCH STACK */}
-                        <Tab.Screen
-                            name="search"
-                            component={SearchStack}
-                            options={{
-                                tabBarLabel: "",
-                            }}
-                        />
+                                {/* SEARCH STACK */}
+                                <Tab.Screen
+                                    name="search"
+                                    component={SearchStack}
+                                    options={{
+                                        tabBarLabel: "",
+                                    }}
+                                />
 
-                        {/* POST STACK  CAMBIAR EL COMPONENTE*/}
-                        <Tab.Screen
-                            name="post"
-                            component={PostStack}
-                            options={{
-                                tabBarLabel: "Crear publicación",
-                            }}
-                        />
+                                {/* POST STACK  CAMBIAR EL COMPONENTE*/}
+                                <Tab.Screen
+                                    name="post"
+                                    component={PostStack}
+                                    options={{
+                                        tabBarLabel: "Crear publicación",
+                                    }}
+                                />
 
-                        {/* ACTIVITY STACK */}
-                        <Tab.Screen
-                            name="activity"
-                            component={ActivityStack}
-                            options={{
-                                tabBarLabel: "",
-                            }}
-                        />
-                        {/* ACCOUNT STACK */}
+                                {/* ACTIVITY STACK */}
+                                <Tab.Screen
+                                    name="activity"
+                                    component={ActivityStack}
+                                    options={{
+                                        tabBarLabel: "",
+                                    }}
+                                />
+                                {/* ACCOUNT STACK */}
 
-                        <Tab.Screen
-                            name="account"
-                            component={AccountStack}
-                            options={{
-                                tabBarLabel: "",
-                            }}
-                        />
-                    </Tab.Navigator>
-                ) : (
-                    <AuthStack />
-                )}
-            </NavigationContainer>
-        </SafeAreaProvider>
+                                <Tab.Screen
+                                    name="account"
+                                    component={AccountStack}
+                                    options={{
+                                        tabBarLabel: "",
+                                    }}
+                                />
+                            </Tab.Navigator>
+                        ) : (
+                            <AuthStack />
+                        )}
+                    </NavigationContainer>
+                </SafeAreaProvider>
+            )}
+        </UserContext.Consumer>
     );
 }
 
