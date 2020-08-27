@@ -62,7 +62,7 @@ export default function ListSearch(props: IListRequestProps) {
                 ListFooterComponent={
                     <FooterList
                         isLoading={loadingMore}
-                        isVisible={users.length > 0}
+                        isVisible={users.length > 0 && false}
                     />
                 }
             />
