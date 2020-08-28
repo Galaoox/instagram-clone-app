@@ -1,7 +1,7 @@
-import React, { useReducer, useEffect, useMemo } from "react";
-import { View, ActivityIndicator } from "react-native";
+import React, {useEffect, useMemo, useReducer} from "react";
+import {ActivityIndicator, View} from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { AuthContext, UserContext } from "./context";
+import {AuthContext, UserContext} from "./context";
 
 interface IloginState {
     isLoading: boolean;
@@ -19,7 +19,6 @@ export default function AppContext(props: { children: any }) {
         name: null,
         userToken: null,
     };
-
     const loginReducer = (prevState: IloginState, action: any) => {
         switch (action.type) {
             case "RETRIEVE_TOKEN":
@@ -57,10 +56,7 @@ export default function AppContext(props: { children: any }) {
                 throw new Error();
         }
     };
-    //reducer
-
     const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
-    console.log(loginState);
     const authContext = useMemo(
         () => ({
             signIn: async (email: string, password: string) => {

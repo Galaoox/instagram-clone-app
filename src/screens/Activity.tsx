@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from "react";
-import { View, StyleSheet } from "react-native";
+import React, {useCallback, useState} from "react";
+import {StyleSheet, View} from "react-native";
 import ListRequest from "../components/Activity/ListRequests";
-import { IRequest } from "../models/user";
-import { useFocusEffect } from "@react-navigation/native";
+import {IUser} from "../models/user";
+import {useFocusEffect} from "@react-navigation/native";
 
 export default function Activity() {
-    const [requests, setRequests] = useState<IRequest[]>([]);
+    const [requests, setRequests] = useState<IUser[]>([]);
     const [totalRequest, setTotalRequest] = useState(0);
     const [loading, setLoading] = useState(false);
     const [loadingMoreRequest, setLoadingMoreRequest] = useState(true);
     const [reload, setReload] = useState(false);
 
-    const [startRequest, setStartRequest] = useState<IRequest | null>(null); // paginacion de las solicitudes
+    const [startRequest, setStartRequest] = useState<IUser | null>(null); // paginacion de las solicitudes
 
     const userId = 1; // TODO: USAR REDUX PARA OBTENER LA INFO DEL USUARIO Y ASI SABER EL ID DEL USER
     /**

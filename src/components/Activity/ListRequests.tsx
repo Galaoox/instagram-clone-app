@@ -63,7 +63,7 @@ export default function ListRequest(props: IListRequestProps) {
             {loading ? (
                 <View style={styles.loader}>
                     <ActivityIndicator size="large" color={colors.principal} />
-                    <Text>Cargando restaurantes</Text>
+                    <Text>Cargando solicitudes</Text>
                 </View>
             ) : (
                 <FlatList

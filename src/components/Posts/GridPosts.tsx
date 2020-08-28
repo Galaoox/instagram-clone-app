@@ -1,16 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-    View,
-    FlatList,
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-} from "react-native";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { Image, Button } from "react-native-elements";
-import { size } from "lodash";
-import { SCREEN, colors } from "../../utils/theme";
+import React, {useCallback, useState} from "react";
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
+import {Image} from "react-native-elements";
+import {colors, SCREEN} from "../../utils/theme";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
 
@@ -44,10 +36,8 @@ export default function GridPosts(props: { children: any }) {
         console.log("OBTENIENDO SOLICITUDES");
         await setLoading(true);
 
-        // setTimeout(() => {
-        //     loadPosts();
-        //     setLoading(false);
-        // }, 5000);
+        loadPosts();
+        setLoading(false);
     };
 
     /**
@@ -57,11 +47,9 @@ export default function GridPosts(props: { children: any }) {
     const reloadList = async () => {
         setRefreshing(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        setTimeout(() => {
-            loadPosts();
-            console.log("RELOAD");
-            setRefreshing(false);
-        }, 5000);
+        loadPosts();
+        console.log("RELOAD");
+        setRefreshing(false);
     };
 
     /**
@@ -90,17 +78,24 @@ export default function GridPosts(props: { children: any }) {
         }
     };
 
+    const goPost = (id: number | null = null) => {
+        navigation.navigate("post", {screen: "post", initial: false});
+    };
+
     /**
      * encargado de retornar el componente a mostrar en el flatlist
      * @param param0
      */
-    const renderItem = ({ item }: any) => {
+    const renderItem = ({item}: any) => {
         return (
-            <TouchableOpacity style={styles.touchableOpacityColor}>
+            <TouchableOpacity
+                style={styles.touchableOpacityColor}
+                onPress={() => goPost()}
+            >
                 <Image
                     source={
                         item && item.imageUrl
-                            ? { uri: item.imageUrl }
+                            ? {uri: item.imageUrl}
                             : require("../../../assets/no-image.png")
                     }
                     style={styles.imagePost}
@@ -135,7 +130,7 @@ export default function GridPosts(props: { children: any }) {
                             size="large"
                             color={colors.principal}
                         />
-                        <Text>Cargando restaurantes</Text>
+                        <Text>Cargando publicaciones</Text>
                     </View>
                 ) : (
                     <ListEmptyView text="No hay publicaciones" />
