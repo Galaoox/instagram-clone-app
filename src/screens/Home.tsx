@@ -82,12 +82,12 @@ function mockData() {
     for (let i = 0; i < 20; i++) {
         data.push({
             userName: 'erickavn1984',
-            avatarUrl: 'https://picsum.photos/200',
+            avatarUrl: `https://picsum.photos/id/${i+1}/200/200.jpg`,
             likes: 2 * i,
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
             id: i,
             date: '220-262-2',
-            imageUrl: 'https://picsum.photos/300/300'
+            imageUrl: `https://picsum.photos/id/${i+1}/300/300.jpg?`
         })
     }
 

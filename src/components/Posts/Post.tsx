@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import {Icon, Image, ListItem} from 'react-native-elements';
-import {SCREEN} from "../../utils/theme";
+import {colors, SCREEN} from "../../utils/theme";
 import IPost from "../../models/post";
+import ViewMoreTextCustom from "../ViewMoreTextCustom";
 
 export default function Post(props: Partial<IPost>) {
     const {likes, description, id, userName, date, imageUrl, avatarUrl} = props;
@@ -18,7 +19,7 @@ export default function Post(props: Partial<IPost>) {
                         : require("../../../assets/avatar-default.jpg")
                 }}
                           title={userName ? userName : 'anonimo'}
-                          titleStyle={{fontWeight: 'bold'}}
+                          titleStyle={styles.userName}
                           rightIcon={
                               <TouchableOpacity>
                                   <Icon name='dots-vertical'
@@ -46,7 +47,29 @@ export default function Post(props: Partial<IPost>) {
             <ButtonBar likes={likes} />
 
             {/* FOOTER  */}
+            <View style={styles.marginBottomElements}>
+                <Text style={styles.textDate}>{date}</Text>
+                <ViewMoreTextCustom>
+                    <Text><Text style={styles.userName}>{userName}</Text> {description}</Text>
+                </ViewMoreTextCustom>
+            </View>
+            
+            {/* COMMENT BAR */}
+            <View>
+                <ListItem leftAvatar={{
+                    rounded: true,
+                    size: "medium",
+                    source: require("../../../assets/avatar-default.jpg")
+                }}
+                          title={
+                              <TouchableOpacity>
+                                  <Text style={{color: colors.inactive,  fontSize: 16}}>Comentar</Text>
+                              </TouchableOpacity>
+                          }
+                          
 
+                />
+            </View>
         </View>
     );
 }
@@ -60,11 +83,11 @@ function ButtonBar(props: any){
     
     return (
         <View style={styles.containerButtonBar}>
-            <TouchableOpacity onPress={onPress} style={[styles.like, styles.buttonsBarMargin]}>
-                <Icon name={like ? 'heart' : 'heart-outline'} color={like ? '#F34423': '#000000'} type="material-community" size={40} />
+            <TouchableOpacity onPress={onPress} style={[styles.marginBottomElements, styles.buttonsBarMargin]}>
+                <Icon name={like ? 'heart' : 'heart-outline'} color={like ? '#F34423': '#000000'} type="material-community" size={35} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonsBarMargin}>
-                <Icon name='comment-outline' color="#000000" type="material-community" size={40} />
+                <Icon name='comment-outline' color="#000000" type="material-community" size={35} />
             </TouchableOpacity>
             <View style={styles.containerCountLikes}>
                 <Icon name="heart" color="#000000"  type="material-community" size={20} />
@@ -93,10 +116,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    like:{
+    marginBottomElements:{
         marginLeft: '6%'
     },
     buttonsBarMargin:{
         marginRight: 10
+    },
+    userName:{
+        fontWeight: 'bold'
+    },
+    textDate:{
+        color: colors.inactive
     }
 });
