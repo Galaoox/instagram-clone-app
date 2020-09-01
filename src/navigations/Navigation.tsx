@@ -20,6 +20,9 @@ const Tab = createBottomTabNavigator();
 // Creo el context
 
 export default function Navigation(props: any) {
+    let tabBarVisible = true;
+    console.log(props);
+
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive,
         activeTintColor: colors.principal,
@@ -37,6 +40,7 @@ export default function Navigation(props: any) {
                                 screenOptions={({ route }) => ({
                                     tabBarIcon: ({ color }) =>
                                         screenOptions(route, color),
+                                    tabBarVisible: getTabBarVisibility(route),
                                 })}
                             >
                                 {/* HOME STACK */}
@@ -127,4 +131,20 @@ function screenOptions(route: { name: string }, color: string) {
             color={color}
         />
     );
+}
+
+/**
+ * oculta o muestra el tab bar
+ * @param route indica la ruta en la que se encuentra el navigation
+ */
+function getTabBarVisibility(route: any) {
+    const routeName = route.state
+        ? route.state.routes[route.state.index].name
+        : "";
+
+    if (routeName === "comments") {
+        return false;
+    }
+
+    return true;
 }

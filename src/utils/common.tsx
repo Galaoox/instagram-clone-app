@@ -22,7 +22,6 @@ export async function openCamara() {
     } else {
         const result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
-            aspect: [4, 3],
         });
         if (result.cancelled) {
             // toastRef.current.show("Has cerrado la selección de imagenes");

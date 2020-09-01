@@ -6,6 +6,7 @@ import IPost from "../../models/post";
 import ViewMoreTextCustom from "../ViewMoreTextCustom";
 import Modal from "../Modal";
 import OptionsPost from "./OptionsPost";
+import { useNavigation } from "@react-navigation/native";
 
 interface IPostProps extends IPost {}
 
@@ -19,8 +20,8 @@ export default function Post(props: Partial<IPostProps>) {
         imageUrl,
         avatarUrl,
     } = props;
-
     const [showModal, setShowModal] = useState(false);
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
@@ -76,7 +77,11 @@ export default function Post(props: Partial<IPostProps>) {
 
             {/* COMMENT BAR */}
             <View>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                    onPress={() =>
+                        navigation.navigate("comments", { postId: id })
+                    }
+                >
                     <ListItem
                         leftAvatar={{
                             rounded: true,

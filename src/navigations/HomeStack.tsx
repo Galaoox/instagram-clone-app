@@ -1,9 +1,10 @@
 import React from "react";
-import {createStackNavigator} from "@react-navigation/stack";
-import {Image} from 'react-native-elements';
+import { createStackNavigator } from "@react-navigation/stack";
+import { Image } from "react-native-elements";
 // Components
 import Home from "../screens/Home";
-import {SCREEN} from "../utils/theme";
+import { SCREEN } from "../utils/theme";
+import ListComments from "../components/ListComments";
 
 const Stack = createStackNavigator();
 
@@ -14,15 +15,24 @@ export default function HomeStack() {
                 name="home"
                 component={Home}
                 options={{
-                    headerTitle: () => <Image
-                        style={{
-                            height: '100%',
-                            width: SCREEN.WIDTH / 2.5
-                        }}
-                        resizeMode={"center"}
-                        source={require("../../assets/logo-Instagram-black.png")}
-                    />,
+                    headerTitle: () => (
+                        <Image
+                            style={{
+                                height: "100%",
+                                width: SCREEN.WIDTH / 2.5,
+                            }}
+                            resizeMode={"center"}
+                            source={require("../../assets/logo-Instagram-black.png")}
+                        />
+                    ),
                     headerTitleAlign: "center",
+                }}
+            />
+            <Stack.Screen
+                name="comments"
+                component={ListComments}
+                options={{
+                    title: "Comentarios",
                 }}
             />
         </Stack.Navigator>
