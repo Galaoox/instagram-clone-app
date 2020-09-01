@@ -12,6 +12,7 @@ interface IInfoFileProps {
     name: string;
     bio: string;
     changeImage: Function;
+    userId: number;
 }
 
 export default function InfoProFile(props: Partial<IInfoFileProps>) {
@@ -22,7 +23,7 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
         following = 0,
         name = "Anonimo",
         bio = "Nam animi est. Et et assumenda voluptate ea veniam. Qui deleniti non odio quo labore iure fugiat quam eum.",
-
+        userId,
         changeImage,
     } = props;
 
@@ -49,7 +50,7 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
                             ? { uri: imageUrl }
                             : require("../../../assets/avatar-default.jpg")
                     }
-                    showAccessory={!!changeImage}
+                    showAccessory={userId === 0}
                     onAccessoryPress={changeAvatar}
                     accessory={{
                         type: "material-community",

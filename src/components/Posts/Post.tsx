@@ -4,8 +4,12 @@ import { Divider, Icon, Image, ListItem } from "react-native-elements";
 import { colors, SCREEN } from "../../utils/theme";
 import IPost from "../../models/post";
 import ViewMoreTextCustom from "../ViewMoreTextCustom";
+import Modal from "../Modal";
+import OptionsPost from "./OptionsPost";
 
-export default function Post(props: Partial<IPost>) {
+interface IPostProps extends IPost {}
+
+export default function Post(props: Partial<IPostProps>) {
     const {
         likes,
         description,
@@ -16,7 +20,7 @@ export default function Post(props: Partial<IPost>) {
         avatarUrl,
     } = props;
 
-    const goComment = () => {};
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -33,7 +37,7 @@ export default function Post(props: Partial<IPost>) {
                     title={userName ? userName : "anonimo"}
                     titleStyle={styles.userName}
                     rightIcon={
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setShowModal(true)}>
                             <Icon
                                 name="dots-vertical"
                                 type="material-community"
@@ -72,7 +76,7 @@ export default function Post(props: Partial<IPost>) {
 
             {/* COMMENT BAR */}
             <View>
-                <TouchableOpacity onPress={goComment}>
+                <TouchableOpacity onPress={() => {}}>
                     <ListItem
                         leftAvatar={{
                             rounded: true,
@@ -89,6 +93,18 @@ export default function Post(props: Partial<IPost>) {
                     />
                 </TouchableOpacity>
             </View>
+
+            {id != null && id != undefined ? (
+                <Modal
+                    isVisible={showModal}
+                    setIsVisible={setShowModal}
+                    width={"60%"}
+                >
+                    <OptionsPost id={id} />
+                </Modal>
+            ) : (
+                <></>
+            )}
             <Divider />
         </View>
     );

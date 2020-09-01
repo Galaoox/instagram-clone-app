@@ -6,15 +6,16 @@ interface IModalProps {
     isVisible: boolean;
     setIsVisible: Function;
     children: React.ReactElement;
+    width?: string | number;
 }
 
 export default function Modal(props: IModalProps) {
-    const { isVisible, setIsVisible, children } = props;
+    const { isVisible, setIsVisible, children, width = "90%" } = props;
     const closeModal = () => setIsVisible(false);
     return (
         <Overlay
             isVisible={isVisible}
-            overlayStyle={styles.overlay}
+            overlayStyle={[styles.overlay, { width: width }]}
             backdropStyle={styles.overlayBackdrop}
             onBackdropPress={closeModal}
         >
@@ -29,6 +30,5 @@ const styles = StyleSheet.create({
     },
     overlay: {
         height: "auto",
-        width: "90%",
     },
 });

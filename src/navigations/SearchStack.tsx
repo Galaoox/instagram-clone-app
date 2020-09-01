@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 // Components
 import Search from "../screens/Search";
+import Profile from "../components/Account/Profile";
 
 const Stack = createStackNavigator();
 export default function SearchStack() {
@@ -14,6 +15,7 @@ export default function SearchStack() {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen name="profile" component={Profile} />
         </Stack.Navigator>
     );
 }

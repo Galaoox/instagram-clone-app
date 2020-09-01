@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Icon, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -8,12 +8,18 @@ import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
 
 export default function Profile(props: any) {
-    const { userName, name } = props;
+    const { userName, name, userId, route } = props;
+    console.log(props);
     const navigation = useNavigation();
     navigation.setOptions({
         title: userName,
     });
-    const isUser = true; // bandera que indica si es el usuario que inicio sesion
+    const id =
+        userId && userId === 0
+            ? 0
+            : route && route.params && route.params.userId
+            ? route.params.userId
+            : 0; // bandera que indica si es el usuario que inicio sesion
 
     /**
      *  Encargado de recibir las imagenes que el usuario selecciono y
@@ -36,9 +42,13 @@ export default function Profile(props: any) {
                 EL FLATLIST CON  EL SCROLLVIEW
                 */}
                 <View>
-                    <InfoProFile name={name} changeImage={changeImage} />
+                    <InfoProFile
+                        name={name}
+                        changeImage={changeImage}
+                        userId={id}
+                    />
                     <View style={styles.viewButton}>
-                        {isUser ? (
+                        {id === 0 ? (
                             <Button
                                 containerStyle={styles.btnEditContainer}
                                 buttonStyle={styles.btnEdit}

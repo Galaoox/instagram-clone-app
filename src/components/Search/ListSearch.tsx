@@ -5,11 +5,12 @@ import {
     ActivityIndicator,
     StyleSheet,
     Text,
+    TouchableOpacity,
 } from "react-native";
 import { ListItem } from "react-native-elements";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
-import { colors } from "../../utils/theme";
+import { useNavigation } from "@react-navigation/native";
 
 interface IListRequestProps {
     users: any[];
@@ -29,19 +30,35 @@ export default function ListSearch(props: IListRequestProps) {
         refreshing = false,
         children,
     } = props;
+
+    const navigation = useNavigation();
+
+    /**
+     * Envia al usuario a la vista de profile del usuario que selecciono
+     */
+    const gotToProfile = (userId: number) => {
+        navigation.navigate("profile", { userId: userId });
+    };
+    /**
+     *  Renderiza cada elemento de la lista
+     *
+     */
     const renderItem = ({ item }: any) => {
         return (
-            <ListItem
-                leftAvatar={{
-                    rounded: true,
-                    size: "large",
-                    source: item.avatarUrl
-                        ? { uri: item.avatarUrl }
-                        : require("../../../assets/avatar-default.jpg"),
-                }}
-                title={item.username}
-                subtitle={item.name}
-            />
+            <TouchableOpacity>
+                <ListItem
+                    leftAvatar={{
+                        rounded: true,
+                        size: "large",
+                        source: item.avatarUrl
+                            ? { uri: item.avatarUrl }
+                            : require("../../../assets/avatar-default.jpg"),
+                    }}
+                    title={item.username}
+                    subtitle={item.name}
+                    onPress={() => gotToProfile(item.id)}
+                />
+            </TouchableOpacity>
         );
     };
     return (
@@ -69,9 +86,3 @@ export default function ListSearch(props: IListRequestProps) {
         </View>
     );
 }
-const styles = StyleSheet.create({
-    loader: {
-        marginVertical: 10,
-        alignItems: "center",
-    },
-});

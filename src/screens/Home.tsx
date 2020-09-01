@@ -1,9 +1,13 @@
-import React, {useCallback, useState} from "react";
-import {StyleSheet, View} from "react-native";
-import {UserContext} from "../components/context";
+import React, { useCallback, useState, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { UserContext } from "../components/context";
 import ListPosts from "../components/Posts/ListPosts";
 import IPost from "../models/post";
-import {NavigationProp, ParamListBase, useFocusEffect,} from "@react-navigation/native";
+import {
+    NavigationProp,
+    ParamListBase,
+    useFocusEffect,
+} from "@react-navigation/native";
 import OptionsPost from "../components/Posts/OptionsPost";
 import Modal from "../components/Modal";
 
@@ -18,8 +22,8 @@ export default function Home(props: IHomeProps) {
     const [loadingMore, setLoadingMore] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [startPost, setStartPost] = useState<IPost | null>(null); // paginacion de las publicaciones
-    const [showModal, setShowModal] = useState(false);
-    const [postOptions, setPostOptions] = useState<number | null>(null);
+
+    const [postId, setPostId] = useState<number | null | undefined>(null);
     const getPost = (isReload: boolean = false) => {
         const loadingMethod = isReload ? setRefreshing : setLoading;
         loadingMethod(true);
@@ -48,18 +52,20 @@ export default function Home(props: IHomeProps) {
     const getTotalRequest = () => {
         setTotalPosts(50);
     };
-    
+
+    /**
+     * Se ejecutan los metodos que contiene cada ves que se ingrese a la vista
+     */
     useFocusEffect(
         useCallback(() => {
             getPost();
             getTotalRequest();
         }, [])
     );
-    
 
     return (
         <UserContext.Consumer>
-            {({name}) => {
+            {({ name }) => {
                 return (
                     <View style={styles.container}>
                         <ListPosts
@@ -70,9 +76,6 @@ export default function Home(props: IHomeProps) {
                             posts={posts}
                             refreshing={refreshing}
                         />
-                        <Modal isVisible={false} setIsVisible={setShowModal} >
-                            <OptionsPost id={postOptions} setShowModal={setShowModal} />
-                        </Modal>
                     </View>
                 );
             }}

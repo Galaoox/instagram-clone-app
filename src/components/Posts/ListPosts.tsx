@@ -19,6 +19,7 @@ interface IListPostsProps {
     refreshing: boolean;
     onRefresh: any;
     loading: boolean;
+    openOptions?: Function;
 }
 
 export default function ListPosts(props: IListPostsProps) {

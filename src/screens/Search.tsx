@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import {  StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
     NavigationProp,
@@ -7,7 +7,6 @@ import {
     useFocusEffect,
 } from "@react-navigation/native";
 import { SearchBar } from "react-native-elements";
-import {} from "react-native-gesture-handler";
 import { IUser } from "../models/user";
 import ListSearch from "../components/Search/ListSearch";
 import { colors } from "../utils/theme";
@@ -41,6 +40,7 @@ export default function Search(props: ISearchProps) {
      */
     const getUsers = async () => {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
+        setUsers(mockData());
     };
 
     /**
@@ -88,7 +88,7 @@ export default function Search(props: ISearchProps) {
 
     useFocusEffect(
         useCallback(() => {
-            //getUsers();
+            getUsers();
             getTotalUsers();
         }, [])
     );
