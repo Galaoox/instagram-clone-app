@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {  StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
     NavigationProp,
@@ -30,12 +30,9 @@ export default function Search(props: ISearchProps) {
      *
      */
     const loadUsers = async () => {
-        // TODO: QUITAR ESE PARAMETRO "RECARGANDO"
         setLoading(true);
-        setTimeout(() => {
-            setUsers(mockData());
-            setLoading(false);
-        }, 5000);
+        setUsers(mockData());
+        setLoading(false);
     };
 
     /**
@@ -43,11 +40,7 @@ export default function Search(props: ISearchProps) {
      *
      */
     const getUsers = async () => {
-        //setLoading(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        //await loadRequest();
-        //setLoading(false);
-        console.log("OBTENIENDO SOLICITUDES");
     };
 
     /**

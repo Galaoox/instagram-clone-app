@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import Toast from "react-native-easy-toast";
+
 import { Image } from "react-native-elements";
 import RegisterForm from "../../components/Account/RegisterForm";
 import { SCREEN, colors } from "../../utils/theme";
-import { StackScreenProps } from "@react-navigation/stack";
-import { CompositeNavigationProp } from "@react-navigation/native";
+
 
 interface IRegisterProps {
     navigation: any;
@@ -14,8 +13,6 @@ interface IRegisterProps {
 
 export default function Register(props: IRegisterProps) {
     const { navigation } = props;
-    //navigation.
-    const toastRef = useRef();
     return (
         <KeyboardAwareScrollView style={styles.container}>
             <View style={styles.viewBackground} />

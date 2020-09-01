@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
-import {Icon, Image, ListItem} from 'react-native-elements';
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Divider, Icon, Image, ListItem} from 'react-native-elements';
 import {colors, SCREEN} from "../../utils/theme";
 import IPost from "../../models/post";
 import ViewMoreTextCustom from "../ViewMoreTextCustom";
@@ -56,20 +56,20 @@ export default function Post(props: Partial<IPost>) {
             
             {/* COMMENT BAR */}
             <View>
-                <ListItem leftAvatar={{
-                    rounded: true,
-                    size: "medium",
-                    source: require("../../../assets/avatar-default.jpg")
-                }}
-                          title={
-                              <TouchableOpacity>
+                <TouchableOpacity>
+                    <ListItem leftAvatar={{
+                        rounded: true,
+                        size: "medium",
+                        source: require("../../../assets/avatar-default.jpg")
+                    }}
+                              title={
                                   <Text style={{color: colors.inactive,  fontSize: 16}}>Comentar</Text>
-                              </TouchableOpacity>
-                          }
-                          
+                              }
+                    />
+                </TouchableOpacity>
 
-                />
             </View>
+            <Divider />
         </View>
     );
 }
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     marginBottomElements:{
-        marginLeft: '6%'
+        marginLeft: '4%'
     },
     buttonsBarMargin:{
         marginRight: 10
