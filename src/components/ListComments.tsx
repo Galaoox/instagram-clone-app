@@ -57,7 +57,6 @@ export default function ListComments(props: any) {
                 keyExtractor={(item, index) => index.toString()}
             />
             <View style={styles.containerInput}>
-                <Divider />
                 <View style={styles.avatar}>
                     <Avatar
                         rounded
@@ -86,7 +85,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        borderTopWidth: 2,
         width: "100%",
     },
     input: {
