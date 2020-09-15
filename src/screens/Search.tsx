@@ -52,13 +52,11 @@ export default function Search(props: ISearchProps) {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         await loadUsers();
         setReload(false);
-        console.log("RELOAD");
     };
     /**
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalUsers = () => {
-        console.log("obteniendo cantidad total de solicitudes");
         setTotalUsers(50);
     };
 
@@ -68,7 +66,6 @@ export default function Search(props: ISearchProps) {
     const handleLoadMore = async () => {
         if (users.length < totalUsers) {
             setLoadingMore(true);
-            console.log("OBTENIENDO MAS SOLICITUDES");
             const data = await mockData();
             data.length > 0
                 ? setStartUser(data[data.length - 1])
@@ -82,7 +79,6 @@ export default function Search(props: ISearchProps) {
 
     const onChangeSearch = (value: string) => {
         setSearch(value);
-        console.log(value);
         loadUsers();
     };
 

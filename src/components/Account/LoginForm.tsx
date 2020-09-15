@@ -13,6 +13,7 @@ export default function LoginForm(props: ILoginFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
     const { signIn } = useContext(AuthContext);
 
@@ -21,9 +22,9 @@ export default function LoginForm(props: ILoginFormProps) {
      * action "login" enviando como parametro "email" y "password"
      * y si es correcto el inicio de sesion ira a la screen account
      */
-    const submit = () => {
-        signIn("asdasd", "asdasdas");
-        // login({ email, password }).then(() => navigation.navigate("account"));
+    const submit = async () => {
+        setLoading(true);
+        await signIn(email, password, () => setLoading(false));
     };
 
     return (
@@ -49,6 +50,7 @@ export default function LoginForm(props: ILoginFormProps) {
                 title="Iniciar sesión"
                 containerStyle={styles.btnContainerLogin}
                 buttonStyle={styles.btnLogin}
+                loading={loading}
             />
         </View>
     );

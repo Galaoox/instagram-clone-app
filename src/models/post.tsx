@@ -1,5 +1,5 @@
 export default interface IPost {
-    userName: string;
+    username: string;
     likes: number;
     description: string;
     id: number;

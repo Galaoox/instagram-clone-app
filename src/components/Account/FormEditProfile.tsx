@@ -4,6 +4,7 @@ import { Input, Avatar } from "react-native-elements";
 import { Formik, FormikConfig } from "formik";
 import { nameIcon, userIcon, bioIcon, webIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
+import { openCamara } from "../../utils/common";
 
 interface IFormEditProfileProps {
     formik: FormikConfig<{
@@ -16,6 +17,8 @@ interface IFormEditProfileProps {
 
 export default function FormEditProfile(props: any) {
     const {
+        changeImage,
+        imageSelected,
         formik: {
             initialValues,
             handleSubmit,
@@ -23,9 +26,21 @@ export default function FormEditProfile(props: any) {
             touched,
             errors,
             setFieldTouched,
-            values: { name, user, biography, webSite, imageUrl },
+            values: { name, username, biography, webSite, imageUrl },
         },
     } = props;
+
+    /**
+     * Encargado de ejecutar la accion de seleccionar una imagen y enviar los datos de la imagen
+     * seleccionada al metodo changeImage
+     */
+    const changeAvatar = async () => {
+        if (changeImage) {
+            const images = await openCamara();
+            changeImage(images);
+        }
+    };
+
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
             <View>
@@ -33,15 +48,21 @@ export default function FormEditProfile(props: any) {
                     {/* TODO: AÑADIR FUNCIONALIDAD DE AGREGAR IMAGENES A EL ICONO DEL AVATAR Y EL TEXTO */}
                     <Avatar
                         rounded
-                        size="large"
+                        size="xlarge"
                         containerStyle={styles.avatar}
                         source={
-                            imageUrl
-                                ? { uri: imageUrl }
+                            imageSelected || imageUrl
+                                ? {
+                                      uri:
+                                          imageSelected && imageSelected.uri
+                                              ? imageSelected.uri
+                                              : imageUrl,
+                                  }
                                 : require("../../../assets/avatar-default.jpg")
                         }
+                        onPress={changeAvatar}
                     />
-                    <Text style={styles.textAvatar}>
+                    <Text style={styles.textAvatar} onPress={changeAvatar}>
                         Cambiar foto de perfil
                     </Text>
                 </View>
@@ -62,11 +83,13 @@ export default function FormEditProfile(props: any) {
                     labelStyle={styles.labelInput}
                     placeholder="Usuario"
                     rightIcon={userIcon}
-                    value={user}
-                    onChangeText={handleChange("user")}
-                    onBlur={() => setFieldTouched("user")}
+                    value={username}
+                    onChangeText={handleChange("username")}
+                    onBlur={() => setFieldTouched("username")}
                     errorMessage={
-                        touched.user && errors.user ? errors.user : null
+                        touched.username && errors.username
+                            ? errors.username
+                            : null
                     }
                 />
                 {/* TODO: CAMBIAR ICONO DEL MOCKUP */}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import Loading from "../components/Loading";
 import PostForm from "../components/Posts/PostForm";
 import { useFormik } from "formik";
@@ -13,9 +13,7 @@ export default function PostCreate() {
         initialValues: {
             description: "",
         },
-        onSubmit: (values) => {
-            console.log(values);
-        },
+        onSubmit: (values) => {},
         validationSchema: validatorSchema(),
     });
     return (

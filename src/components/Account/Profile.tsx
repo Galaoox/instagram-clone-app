@@ -8,11 +8,10 @@ import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
 
 export default function Profile(props: any) {
-    const { userName, name, userId, route } = props;
-    console.log(props);
+    const { username, name, userId, route } = props;
     const navigation = useNavigation();
     navigation.setOptions({
-        title: userName,
+        title: username,
     });
     const id =
         userId && userId === 0
@@ -26,9 +25,7 @@ export default function Profile(props: any) {
      *  realizar la solicitud http para cambiar el avatar del usuario
      * @param images
      */
-    const changeImage = (images: Object) => {
-        console.log(images);
-    };
+    const changeImage = (images: Object) => {};
 
     const goToEdit = () => {
         navigation.navigate("editProfile");

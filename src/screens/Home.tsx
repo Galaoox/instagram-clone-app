@@ -27,14 +27,12 @@ export default function Home(props: IHomeProps) {
     const getPost = (isReload: boolean = false) => {
         const loadingMethod = isReload ? setRefreshing : setLoading;
         loadingMethod(true);
-        console.log("recargando o no");
         loadingMethod(false);
     };
 
     const handleLoadMore = () => {
         if (posts.length < totalPosts) {
             setLoadingMore(true);
-            console.log("OBTENIENDO MAS SOLICITUDES");
             const data = mockData();
             data.length > 0
                 ? setStartPost(data[data.length - 1])
@@ -94,7 +92,7 @@ function mockData() {
     const data: IPost[] = [];
     for (let i = 0; i < 20; i++) {
         data.push({
-            userName: "erickavn1984",
+            username: "erickavn1984",
             avatarUrl: `https://picsum.photos/id/${i + 1}/200/200.jpg`,
             likes: 2 * i,
             description:

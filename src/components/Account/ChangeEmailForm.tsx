@@ -22,7 +22,6 @@ export default function ChangeEmailForm(props: any) {
      * @param values valores del formulario que se devuelven en un json
      */
     const submit = (values: { newEmail: string; password: string }) => {
-        console.log(values);
         setShowModal(false);
     };
 
@@ -33,7 +32,6 @@ export default function ChangeEmailForm(props: any) {
                 password: "",
             }}
             onSubmit={(values) => {
-                console.log(values);
                 setShowModal(false);
             }}
             validationSchema={validatorSchema(email)}

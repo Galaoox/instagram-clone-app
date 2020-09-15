@@ -6,17 +6,20 @@ import { colors } from "../../utils/theme";
 import { AuthContext } from "../../components/context";
 
 export default function RegisterForm(props: any) {
-    const { toastRef, login } = props;
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState<string | null>(null);
     const [password, setPassword] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(null);
+    const [username, setusername] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
     const { signUp } = useContext(AuthContext);
     /**
      * Encargado de realizar la solicitud http al action "login"
      * enviando como parametro email y password
      */
     const submit = () => {
-        signUp("email", "name", "userName", "password");
+        setLoading(true);
+        signUp(email, name, username, password, () => setLoading(false));
     };
 
     return (
@@ -34,12 +37,14 @@ export default function RegisterForm(props: any) {
                 labelStyle={styles.labelInput}
                 placeholder="Nombre"
                 rightIcon={nameIcon}
+                onChange={(event) => setName(event.nativeEvent.text)}
             />
             <Input
                 label="Usuario"
                 labelStyle={styles.labelInput}
                 placeholder="Usuario"
                 rightIcon={userIcon}
+                onChange={(event) => setusername(event.nativeEvent.text)}
             />
             <Input
                 label="Contraseña"
@@ -54,6 +59,7 @@ export default function RegisterForm(props: any) {
                 title="Registrarse"
                 containerStyle={styles.btnContainerLogin}
                 buttonStyle={styles.btnLogin}
+                loading={loading}
             />
         </View>
     );

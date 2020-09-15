@@ -20,9 +20,6 @@ const Tab = createBottomTabNavigator();
 // Creo el context
 
 export default function Navigation(props: any) {
-    let tabBarVisible = true;
-    console.log(props);
-
     const tabOptions: BottomTabBarOptions = {
         inactiveTintColor: colors.inactive,
         activeTintColor: colors.principal,
@@ -30,10 +27,10 @@ export default function Navigation(props: any) {
     };
     return (
         <UserContext.Consumer>
-            {({ userToken }) => (
+            {({ token }) => (
                 <SafeAreaProvider>
                     <NavigationContainer>
-                        {userToken ? (
+                        {token ? (
                             <Tab.Navigator
                                 initialRouteName="account"
                                 tabBarOptions={tabOptions}

@@ -26,7 +26,6 @@ export default function ChangePasswordForm(props: IChangePasswordFormProps) {
                 confirmPassword: "",
             }}
             onSubmit={(values) => {
-                console.log(values);
                 setShowModal(false);
             }}
             validationSchema={validatorSchema()}

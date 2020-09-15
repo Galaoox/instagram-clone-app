@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { colors } from "../../utils/theme";
 import HeaderButton from "../../components/Header/CloseButton";
@@ -8,6 +8,8 @@ import { useFormik } from "formik";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import * as yup from "yup";
 import customMessage from "../../utils/customMessage";
+import { getRequest, putRequest } from "../../utils/api";
+import Loading from "../../components/Loading";
 
 interface IEditProfileProps {
     navigation: NavigationProp<ParamListBase>;
@@ -15,24 +17,78 @@ interface IEditProfileProps {
 
 export default function EditProfile(props: IEditProfileProps) {
     const { navigation } = props;
+    const [loading, setLooading] = useState(false);
+    const [valuesForm, setValuesForm] = useState({
+        name: "",
+        username: "",
+        biography: "",
+        webSite: "",
+        imageUrl: "",
+    });
+    const [imageSelected, setImageSelected] = useState<any>(null);
+
+    /**
+     *  Encargado de recibir las imagenes que el usuario selecciono y
+     *  realizar la solicitud http para cambiar el avatar del usuario
+     * @param images
+     */
+    const changeImage = (image: string) => {
+        setImageSelected(image);
+    };
+
     /**
      * encargado de obtener los valores del formulario y enviar la informacion a la api
      * @param values valor de formulario
      */
-    const submit = (values: any) => {
-        console.log("on submit test", values);
+    const submit = async (values: {
+        name: string;
+        username: string;
+        biography: string;
+        webSite: string;
+        imageUrl: string;
+    }) => {
+        console.log(values, "THIS IS VALUES");
+        setLooading(true);
+        const image = (await prepareUploadImage()) as Blob;
+        let formData = new FormData();
+
+        formData.append("image", image);
+        const data = {
+            name: values.name,
+            username: values.username,
+            biography: values.biography,
+            webSite: values.webSite,
+        };
+        formData.append("data", JSON.stringify(data));
+        putRequest(
+            "user/editProfile",
+            formData,
+            (res: any) => {
+                console.log(res);
+                setLooading(false);
+            },
+            true
+        );
+    };
+    const prepareUploadImage = async () => {
+        if (imageSelected && imageSelected.uri) {
+            const response = await fetch(imageSelected.uri);
+            const blob = await response.blob();
+            return blob;
+            // return {
+            //     filename: "image",
+            //     type: blob.type,
+            //     uri: imageSelected.uri,
+            // };
+        }
     };
 
     // Se uso el hook de formik para poder obtener los valores del formulario desde afuera
     const formik = useFormik({
-        initialValues: {
-            name: "",
-            user: "",
-            biography: "",
-            webSite: "",
-        },
+        initialValues: valuesForm,
         onSubmit: submit,
         validationSchema: validatorSchema(),
+        enableReinitialize: true,
     });
     // configuracion de los iconos del header
     navigation.setOptions({
@@ -51,9 +107,31 @@ export default function EditProfile(props: IEditProfileProps) {
     });
 
     const goBack = () => navigation.goBack();
+
+    useEffect(() => {
+        setLooading(true);
+        getRequest("user/showDataEdit", async (res: any) => {
+            setLooading(false);
+            const { biography, imageUrl, name, username, webSite } = res;
+            console.log(res);
+            setValuesForm({
+                biography,
+                name,
+                username,
+                webSite,
+                imageUrl,
+            });
+        });
+    }, []);
+    console.log(formik.errors);
     return (
         <KeyboardAwareScrollView style={styles.container}>
-            <FormEditProfile formik={formik} />
+            <FormEditProfile
+                formik={formik}
+                imageSelected={imageSelected}
+                changeImage={changeImage}
+            />
+            <Loading isVisible={loading} />
         </KeyboardAwareScrollView>
     );
 }
@@ -78,16 +156,16 @@ function validatorSchema() {
     return yup.object().shape({
         name: yup
             .string()
-            .max(100, max + 100)
+            .max(150, max + 150)
             .required(required),
-        user: yup
+        username: yup
             .string()
             .min(4, min + 4)
-            .max(10, max + 10)
+            .max(45, max + 45)
             .required(required),
         biography: yup
             .string()
-            .max(150, max + 150)
+            .max(250, max + 250)
             .required(required),
         webSite: yup
             .string()

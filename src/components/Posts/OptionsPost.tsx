@@ -32,15 +32,11 @@ function options() {
     return [
         {
             title: "Eliminar",
-            action: () => {
-                console.log("eliminar");
-            },
+            action: () => {},
         },
         {
             title: "Editar",
-            action: () => {
-                console.log("editar");
-            },
+            action: () => {},
         },
     ];
 }

@@ -1,8 +1,15 @@
-import React, {useCallback, useState} from "react";
-import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {Image} from "react-native-elements";
-import {colors, SCREEN} from "../../utils/theme";
+import React, { useCallback, useState } from "react";
+import {
+    ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { Image } from "react-native-elements";
+import { colors, SCREEN } from "../../utils/theme";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
 
@@ -33,7 +40,6 @@ export default function GridPosts(props: { children: any }) {
      */
     const getPosts = async () => {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        console.log("OBTENIENDO SOLICITUDES");
         await setLoading(true);
 
         loadPosts();
@@ -48,7 +54,6 @@ export default function GridPosts(props: { children: any }) {
         setRefreshing(true);
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         loadPosts();
-        console.log("RELOAD");
         setRefreshing(false);
     };
 
@@ -56,7 +61,6 @@ export default function GridPosts(props: { children: any }) {
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalPosts = () => {
-        console.log("obteniendo cantidad total de publicaciones");
         setTotalPosts(60);
     };
 
@@ -66,7 +70,6 @@ export default function GridPosts(props: { children: any }) {
     const handleLoadMore = async () => {
         if (posts.length < totalPosts) {
             setloadingMorePosts(true);
-            console.log("OBTENIENDO MAS PUBLICACIONES");
             const data = await mockData();
             data.length > 0
                 ? setStartPosts(data[data.length - 1])
@@ -79,14 +82,14 @@ export default function GridPosts(props: { children: any }) {
     };
 
     const goPost = (id: number | null = null) => {
-        navigation.navigate("post", {screen: "post", initial: false});
+        navigation.navigate("post", { screen: "post", initial: false });
     };
 
     /**
      * encargado de retornar el componente a mostrar en el flatlist
      * @param param0
      */
-    const renderItem = ({item}: any) => {
+    const renderItem = ({ item }: any) => {
         return (
             <TouchableOpacity
                 style={styles.touchableOpacityColor}
@@ -95,7 +98,7 @@ export default function GridPosts(props: { children: any }) {
                 <Image
                     source={
                         item && item.imageUrl
-                            ? {uri: item.imageUrl}
+                            ? { uri: item.imageUrl }
                             : require("../../../assets/no-image.png")
                     }
                     style={styles.imagePost}

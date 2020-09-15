@@ -1,13 +1,14 @@
-import React, {useEffect, useMemo, useReducer} from "react";
-import {ActivityIndicator, View} from "react-native";
+import React, { useEffect, useMemo, useReducer } from "react";
+import { ActivityIndicator, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import {AuthContext, UserContext} from "./context";
+import { AuthContext, UserContext } from "./context";
+import { postRequest } from "../utils/api";
 
 interface IloginState {
     isLoading: boolean;
-    userName: string | null;
+    username: string | null;
     name: string | null;
-    userToken: string | null;
+    token: string | null;
 }
 
 export default function AppContext(props: { children: any }) {
@@ -15,39 +16,39 @@ export default function AppContext(props: { children: any }) {
 
     const initialLoginState: IloginState = {
         isLoading: true,
-        userName: null,
+        username: null,
         name: null,
-        userToken: null,
+        token: null,
     };
     const loginReducer = (prevState: IloginState, action: any) => {
         switch (action.type) {
             case "RETRIEVE_TOKEN":
                 return {
                     ...prevState,
-                    userToken: action.token,
+                    token: action.token,
                     isLoading: false,
                 };
             case "LOGIN":
                 return {
                     ...prevState,
-                    userToken: action.token,
-                    userName: action.userName,
+                    token: action.token,
+                    username: action.username,
                     name: action.name,
                     isLoading: false,
                 };
             case "LOGOUT":
                 return {
                     ...prevState,
-                    userToken: null,
-                    userName: null,
+                    token: null,
+                    username: null,
                     name: null,
                     isLoading: false,
                 };
             case "REGISTER":
                 return {
                     ...prevState,
-                    userToken: action.token,
-                    userName: action.userName,
+                    token: action.token,
+                    username: action.username,
                     name: action.name,
                     isLoading: false,
                 };
@@ -59,38 +60,59 @@ export default function AppContext(props: { children: any }) {
     const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
     const authContext = useMemo(
         () => ({
-            signIn: async (email: string, password: string) => {
-                let userToken;
-                let userName = null;
-                let name;
-                userToken = "testToken";
-                userName = "erickavn1984";
-                name = "Hannyker Arturo Vergara Noriega";
-                try {
-                    await AsyncStorage.setItem("userToken", userToken);
-                } catch (error) {
-                    throw new Error(error);
-                }
-                dispatch({ type: "LOGIN", userName, token: userToken, name });
+            signIn: async (
+                email: string | null,
+                password: string | null,
+                callbackLoading: Function
+            ) => {
+                const data = {
+                    email,
+                    password,
+                };
+                postRequest("auth/singin", data, async (res: any) => {
+                    callbackLoading();
+                    const { msg, name, token, username } = res;
+                    await AsyncStorage.setItem("token", token);
+                    dispatch({
+                        type: "LOGIN",
+                        username,
+                        token: token,
+                        name,
+                    });
+                });
             },
             signOut: async () => {
                 try {
-                    await AsyncStorage.removeItem("userToken");
+                    await AsyncStorage.removeItem("token");
                 } catch (error) {
                     throw new Error(error);
                 }
                 dispatch({ type: "LOGOUT" });
             },
             signUp: (
-                email: string,
-                name: string,
-                userName: string,
-                password: string
+                email: string | null,
+                name: string | null,
+                username: string | null,
+                password: string | null,
+                callbackLoading: Function
             ) => {
-                let userToken = "testToken";
-                userName = "erickavn1984";
-                name = "Hannyker Andre Vergara Noriega";
-                dispatch({ type: "LOGIN", userName, token: userToken, name });
+                const data = {
+                    email: email,
+                    username: username,
+                    password: password,
+                    name: name,
+                };
+                postRequest("auth/singup", data, (res: any) => {
+                    callbackLoading();
+                    const { msg, name, token, username } = res;
+
+                    dispatch({
+                        type: "REGISTER",
+                        username,
+                        token,
+                        name,
+                    });
+                });
             },
         }),
         []
@@ -98,13 +120,13 @@ export default function AppContext(props: { children: any }) {
 
     useEffect(() => {
         setTimeout(async () => {
-            let userToken = null;
+            let token = null;
             try {
-                userToken = await AsyncStorage.getItem("userToken");
+                token = await AsyncStorage.getItem("token");
             } catch (error) {
                 throw new Error(error);
             }
-            dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+            dispatch({ type: "RETRIEVE_TOKEN", token: token });
         }, 1000);
     }, []);
 

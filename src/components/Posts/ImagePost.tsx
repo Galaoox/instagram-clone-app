@@ -15,7 +15,6 @@ export default function ImagePost(props: IImagePostProps) {
      * Selecciona la imagen de la galeria y se añade el valor de la uri al state de image
      */
     const selectImage = async () => {
-        console.log("pruebas");
         openCamara().then((imageSelected) => {
             setImage(imageSelected?.uri);
         });

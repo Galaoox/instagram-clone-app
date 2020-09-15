@@ -41,7 +41,7 @@ export default function ListPosts(props: IListPostsProps) {
                 avatarUrl={item.avatarUrl}
                 imageUrl={item.imageUrl}
                 likes={item.likes}
-                userName={item.userName}
+                username={item.username}
             />
         );
     };

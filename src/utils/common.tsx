@@ -3,38 +3,43 @@ import * as ImagePicker from "expo-image-picker";
 import { Alert } from "react-native";
 
 export async function openCamara() {
-    const resultsPermissions = await Permissions.askAsync(
-        Permissions.CAMERA_ROLL
-    );
-    const resultsPermissionsCamera =
-        resultsPermissions.permissions.cameraRoll.status;
-
-    if (resultsPermissionsCamera === "denied") {
-        // toastRef.current.show(
-        //     "Es necesario aceptar los permisos de la galeria"
-        // );
-        Alert.alert(
-            "",
-            "Es necesario aceptar los permisos de la galeria",
-            [{ text: "OK" }],
-            { cancelable: false }
+    try {
+        const resultsPermissions = await Permissions.askAsync(
+            Permissions.CAMERA_ROLL,
+            Permissions.CAMERA
         );
-    } else {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-        });
-        if (result.cancelled) {
-            // toastRef.current.show("Has cerrado la selección de imagenes");
+        const resultsPermissionsCamera =
+            resultsPermissions.permissions.cameraRoll.status;
+
+        if (resultsPermissionsCamera === "denied") {
+            // toastRef.current.show(
+            //     "Es necesario aceptar los permisos de la galeria"
+            // );
             Alert.alert(
                 "",
-                "Has cerrado la selección de imagenes",
+                "Es necesario aceptar los permisos de la galeria",
                 [{ text: "OK" }],
                 { cancelable: false }
             );
         } else {
-            // SI HAY PERMISOS EJECUTA ESTO
-            return await result;
+            const result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                quality: 1,
+            });
+            if (result.cancelled) {
+                Alert.alert(
+                    "",
+                    "Has cerrado la selección de imagenes",
+                    [{ text: "OK" }],
+                    { cancelable: false }
+                );
+            } else {
+                // SI HAY PERMISOS EJECUTA ESTO
+                return await result;
+            }
         }
+    } catch (error) {
+        console.log(error);
     }
 }
 

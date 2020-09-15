@@ -15,7 +15,7 @@ export default function Post(props: Partial<IPostProps>) {
         likes,
         description,
         id,
-        userName,
+        username,
         date,
         imageUrl,
         avatarUrl,
@@ -35,8 +35,8 @@ export default function Post(props: Partial<IPostProps>) {
                             ? { uri: avatarUrl }
                             : require("../../../assets/avatar-default.jpg"),
                     }}
-                    title={userName ? userName : "anonimo"}
-                    titleStyle={styles.userName}
+                    title={username ? username : "anonimo"}
+                    titleStyle={styles.username}
                     rightIcon={
                         <TouchableOpacity onPress={() => setShowModal(true)}>
                             <Icon
@@ -69,7 +69,7 @@ export default function Post(props: Partial<IPostProps>) {
                 <Text style={styles.textDate}>{date}</Text>
                 <ViewMoreTextCustom>
                     <Text>
-                        <Text style={styles.userName}>{userName}</Text>{" "}
+                        <Text style={styles.username}>{username}</Text>{" "}
                         {description}
                     </Text>
                 </ViewMoreTextCustom>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     buttonsBarMargin: {
         marginRight: 10,
     },
-    userName: {
+    username: {
         fontWeight: "bold",
     },
     textDate: {

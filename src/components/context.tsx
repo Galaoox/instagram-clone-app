@@ -1,18 +1,23 @@
 import React, { createContext } from "react";
 
 export const AuthContext = createContext({
-    signIn: (email: string, password: string) => {},
+    signIn: (
+        email: string | null,
+        password: string | null,
+        callbackLoading: Function
+    ) => {},
     signOut: () => {},
     signUp: (
-        email: string,
-        name: string,
-        userName: string,
-        password: string
+        email: string | null,
+        name: string | null,
+        username: string | null,
+        password: string | null,
+        callbackLoading: Function
     ) => {},
 });
 
 export const UserContext = createContext({
-    userName: null,
+    username: null,
     name: null,
-    userToken: null,
+    token: null,
 });

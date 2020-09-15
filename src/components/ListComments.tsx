@@ -36,8 +36,8 @@ export default function ListComments(props: any) {
                     <View>
                         <ViewMoreTextCustom>
                             <Text>
-                                <Text style={styles.userName}>
-                                    {item.userName}
+                                <Text style={styles.username}>
+                                    {item.username}
                                 </Text>{" "}
                                 {item.description}
                             </Text>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#ffff",
     },
-    userName: {
+    username: {
         fontWeight: "bold",
     },
     containerInput: {
@@ -107,7 +107,7 @@ function mockData() {
         data.push({
             id: index + 2,
             avatarUrl: `https://picsum.photos/id/${index + 1}/200/200.jpg`,
-            userName: "anonimo",
+            username: "anonimo",
             description:
                 "Assumenda sed molestias repudiandae possimus ad et. Ipsam illum pariatur. Ut laboriosam sit cumque quidem accusantium. A excepturi magni eligendi voluptate voluptas quo quod dicta. Nulla qui rerum earum dolor eos minus enim molestiae exercitationem.",
         });

@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from "react";
-import {StyleSheet, View} from "react-native";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import ListRequest from "../components/Activity/ListRequests";
-import {IUser} from "../models/user";
-import {useFocusEffect} from "@react-navigation/native";
+import { IUser } from "../models/user";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function Activity() {
     const [requests, setRequests] = useState<IUser[]>([]);
@@ -34,7 +34,6 @@ export default function Activity() {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         await loadRequest();
         setLoading(false);
-        console.log("OBTENIENDO SOLICITUDES");
     };
 
     /**
@@ -46,13 +45,11 @@ export default function Activity() {
         // ejecuta una peticion a la api y me las solicitudes de ese usuario
         await loadRequest(true);
         setReload(false);
-        console.log("RELOAD");
     };
     /**
      * Obtiene la cantidad total de solicitudes que tiene el usuario
      */
     const getTotalRequest = () => {
-        console.log("obteniendo cantidad total de solicitudes");
         setTotalRequest(50);
     };
 
@@ -62,7 +59,6 @@ export default function Activity() {
     const handleLoadMore = async () => {
         if (requests.length < totalRequest) {
             setLoadingMoreRequest(true);
-            console.log("OBTENIENDO MAS SOLICITUDES");
             const data = await mockData();
             data.length > 0
                 ? setStartRequest(data[data.length - 1])
