@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
-const apiUrl = "https://4421833597a8.ngrok.io/";
+import { Alert } from "react-native";
+import global from "../global";
 
 /**
  *  Metodo usado para hacer peticiones get
@@ -37,11 +38,10 @@ export async function putRequest(
 ) {
     const header = {
         method: "PUT",
-        body: sendFormData ? data : JSON.stringify(data),
+        body: JSON.stringify(data),
         headers: {
-            "Content-Type": sendFormData
-                ? "application/x-www-form-urlencoded"
-                : "application/json; charset=utf-8",
+            Accept: "application/json",
+            "Content-Type": "application/json; charset=utf-8",
         },
     };
     await request(endPoint, header, callback);
@@ -50,12 +50,14 @@ export async function putRequest(
 async function request(endPoint: string, header: any, callback: Function) {
     const token = await AsyncStorage.getItem("token");
     header.headers.Authorization = `Bearer ${token}`;
-    fetch(apiUrl + endPoint, header)
+    fetch(global.api + endPoint, header)
         .then((response) => response.json())
-        .then((res: any) => {
-            callback(res);
+        .then(async (res: any) => {
+            console.log(res.msg);
+            res.msg && Alert.alert("", res.msg);
+            await callback(res);
         })
         .catch(function (error) {
-            console.log(error, "pruebas");
+            console.log(error);
         });
 }

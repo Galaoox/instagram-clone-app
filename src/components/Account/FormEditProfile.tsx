@@ -5,7 +5,7 @@ import { Formik, FormikConfig } from "formik";
 import { nameIcon, userIcon, bioIcon, webIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
 import { openCamara } from "../../utils/common";
-
+import global from "../../global";
 interface IFormEditProfileProps {
     formik: FormikConfig<{
         name: string;
@@ -56,7 +56,7 @@ export default function FormEditProfile(props: any) {
                                       uri:
                                           imageSelected && imageSelected.uri
                                               ? imageSelected.uri
-                                              : imageUrl,
+                                              : global.api + imageUrl,
                                   }
                                 : require("../../../assets/avatar-default.jpg")
                         }

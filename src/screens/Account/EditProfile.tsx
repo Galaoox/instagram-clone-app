@@ -47,40 +47,29 @@ export default function EditProfile(props: IEditProfileProps) {
         webSite: string;
         imageUrl: string;
     }) => {
-        console.log(values, "THIS IS VALUES");
         setLooading(true);
-        const image = (await prepareUploadImage()) as Blob;
-        let formData = new FormData();
-
-        formData.append("image", image);
-        const data = {
+        let data: any = {
             name: values.name,
             username: values.username,
             biography: values.biography,
             webSite: values.webSite,
+            image: prepareUploadImage(),
         };
-        formData.append("data", JSON.stringify(data));
-        putRequest(
-            "user/editProfile",
-            formData,
-            (res: any) => {
-                console.log(res);
-                setLooading(false);
-            },
-            true
-        );
+        putRequest("user/editProfile", data, (res: any) => {
+            setLooading(false);
+        });
     };
-    const prepareUploadImage = async () => {
+    const prepareUploadImage = () => {
         if (imageSelected && imageSelected.uri) {
-            const response = await fetch(imageSelected.uri);
-            const blob = await response.blob();
-            return blob;
-            // return {
-            //     filename: "image",
-            //     type: blob.type,
-            //     uri: imageSelected.uri,
-            // };
+            let fileType = imageSelected.uri.substring(
+                imageSelected.uri.lastIndexOf(".") + 1
+            );
+            return {
+                base64: imageSelected.base64,
+                type: fileType,
+            };
         }
+        return null;
     };
 
     // Se uso el hook de formik para poder obtener los valores del formulario desde afuera
@@ -113,7 +102,6 @@ export default function EditProfile(props: IEditProfileProps) {
         getRequest("user/showDataEdit", async (res: any) => {
             setLooading(false);
             const { biography, imageUrl, name, username, webSite } = res;
-            console.log(res);
             setValuesForm({
                 biography,
                 name,
@@ -123,7 +111,6 @@ export default function EditProfile(props: IEditProfileProps) {
             });
         });
     }, []);
-    console.log(formik.errors);
     return (
         <KeyboardAwareScrollView style={styles.container}>
             <FormEditProfile

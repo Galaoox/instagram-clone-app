@@ -25,6 +25,8 @@ export async function openCamara() {
             const result = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 quality: 1,
+                aspect: [4, 3],
+                base64: true,
             });
             if (result.cancelled) {
                 Alert.alert(
