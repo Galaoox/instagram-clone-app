@@ -33,8 +33,7 @@ export async function postRequest(
 export async function putRequest(
     endPoint: string,
     data: any,
-    callback: Function,
-    sendFormData = false
+    callback: Function
 ) {
     const header = {
         method: "PUT",
@@ -54,7 +53,7 @@ async function request(endPoint: string, header: any, callback: Function) {
         const response = await fetch(global.api + endPoint, header);
         const responseJson = await response.json();
         responseJson.msg && Alert.alert("", responseJson.msg);
-        callback(responseJson);
+        await callback(responseJson);
     } catch (error) {
         throw new Error("Request");
     }

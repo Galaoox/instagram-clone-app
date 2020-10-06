@@ -203,7 +203,7 @@ export default function AppContext(props: { children: any }) {
                     image: image,
                 };
                 putRequest("user/editProfile", data, async (res: any) => {
-                    callbackLoading();
+                    await callbackLoading();
                     const {
                         name,
                         token,
@@ -223,7 +223,7 @@ export default function AppContext(props: { children: any }) {
                             webSite,
                         })
                     );
-                    dispatch({
+                    await dispatch({
                         type: "UPDATE_PROFILE",
                         username,
                         token,
