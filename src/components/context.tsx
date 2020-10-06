@@ -14,10 +14,21 @@ export const AuthContext = createContext({
         password: string | null,
         callbackLoading: Function
     ) => {},
+    updateProfile: (
+        name: string | null,
+        username: string | null,
+        biography: string | null,
+        webSite: string | null,
+        image: Object | null,
+        callbackLoading: Function
+    ) => {},
 });
 
 export const UserContext = createContext({
     username: null,
     name: null,
     token: null,
+    imageUrl: null,
+    biography: null,
+    webSite: null,
 });

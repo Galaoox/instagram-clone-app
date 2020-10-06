@@ -14,8 +14,15 @@ export default function Account(props: IAccountProps) {
 
     return (
         <UserContext.Consumer>
-            {({ name, username }) => (
-                <Profile name={name} userId="0" username={username} />
+            {({ name, username, biography, imageUrl, webSite }) => (
+                <Profile
+                    name={name}
+                    userId="0"
+                    username={username}
+                    biography={biography}
+                    imageUrl={imageUrl}
+                    webSite={webSite}
+                />
             )}
         </UserContext.Consumer>
     );

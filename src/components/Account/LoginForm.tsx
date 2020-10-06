@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
 import { View, StyleSheet } from "react-native";
-import { Input, IconProps, Button } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import { passwordIcon, emailIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
-import { connect } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 //CONTEXT
 import { AuthContext } from "../../components/context";

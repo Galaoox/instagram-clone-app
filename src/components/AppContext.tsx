@@ -2,13 +2,16 @@ import React, { useEffect, useMemo, useReducer } from "react";
 import { ActivityIndicator, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext, UserContext } from "./context";
-import { postRequest } from "../utils/api";
+import { postRequest, putRequest } from "../utils/api";
 
 interface IloginState {
     isLoading: boolean;
     username: string | null;
     name: string | null;
     token: string | null;
+    imageUrl: string | null;
+    biography: string | null;
+    webSite: string | null;
 }
 
 export default function AppContext(props: { children: any }) {
@@ -19,13 +22,21 @@ export default function AppContext(props: { children: any }) {
         username: null,
         name: null,
         token: null,
+        imageUrl: null,
+        biography: null,
+        webSite: null,
     };
     const loginReducer = (prevState: IloginState, action: any) => {
         switch (action.type) {
-            case "RETRIEVE_TOKEN":
+            case "GET_DATA":
                 return {
                     ...prevState,
                     token: action.token,
+                    username: action.username,
+                    name: action.name,
+                    imageUrl: action.imageUrl,
+                    biography: action.biography,
+                    webSite: action.webSite,
                     isLoading: false,
                 };
             case "LOGIN":
@@ -34,6 +45,9 @@ export default function AppContext(props: { children: any }) {
                     token: action.token,
                     username: action.username,
                     name: action.name,
+                    imageUrl: action.imageUrl,
+                    biography: action.biography,
+                    webSite: action.webSite,
                     isLoading: false,
                 };
             case "LOGOUT":
@@ -42,14 +56,30 @@ export default function AppContext(props: { children: any }) {
                     token: null,
                     username: null,
                     name: null,
+                    imageUrl: null,
+                    biography: null,
+                    webSite: null,
                     isLoading: false,
                 };
             case "REGISTER":
                 return {
                     ...prevState,
+                    username: action.username,
+                    name: action.name,
+                    imageUrl: action.imageUrl,
+                    biography: action.biography,
+                    webSite: action.webSite,
+                    isLoading: false,
+                };
+            case "UPDATE_PROFILE":
+                return {
+                    ...prevState,
                     token: action.token,
                     username: action.username,
                     name: action.name,
+                    imageUrl: action.imageUrl,
+                    biography: action.biography,
+                    webSite: action.webSite,
                     isLoading: false,
                 };
 
@@ -71,19 +101,42 @@ export default function AppContext(props: { children: any }) {
                 };
                 postRequest("auth/singin", data, async (res: any) => {
                     callbackLoading();
-                    const { msg, name, token, username } = res;
+                    const {
+                        name,
+                        token,
+                        username,
+                        imageUrl,
+                        biography,
+                        webSite,
+                    } = res;
                     await AsyncStorage.setItem("token", token);
+                    await AsyncStorage.setItem(
+                        "userData",
+                        JSON.stringify({
+                            name,
+                            token,
+                            username,
+                            imageUrl,
+                            biography,
+                            webSite,
+                        })
+                    );
+
                     dispatch({
                         type: "LOGIN",
                         username,
                         token: token,
                         name,
+                        imageUrl,
+                        biography,
+                        webSite,
                     });
                 });
             },
             signOut: async () => {
                 try {
                     await AsyncStorage.removeItem("token");
+                    await AsyncStorage.removeItem("userData");
                 } catch (error) {
                     throw new Error(error);
                 }
@@ -102,15 +155,82 @@ export default function AppContext(props: { children: any }) {
                     password: password,
                     name: name,
                 };
-                postRequest("auth/singup", data, (res: any) => {
+                postRequest("auth/singup", data, async (res: any) => {
                     callbackLoading();
-                    const { msg, name, token, username } = res;
-
+                    const {
+                        name,
+                        token,
+                        username,
+                        imageUrl,
+                        biography,
+                        webSite,
+                    } = res;
+                    await AsyncStorage.setItem(
+                        "userData",
+                        JSON.stringify({
+                            name,
+                            token,
+                            username,
+                            imageUrl,
+                            biography,
+                            webSite,
+                        })
+                    );
                     dispatch({
                         type: "REGISTER",
                         username,
                         token,
                         name,
+                        imageUrl,
+                        biography,
+                        webSite,
+                    });
+                });
+            },
+            updateProfile: (
+                name: string | null,
+                username: string | null,
+                biography: string | null,
+                webSite: string | null,
+                image: Object | null,
+                callbackLoading: Function
+            ) => {
+                const data = {
+                    name: name,
+                    username: username,
+                    biography: biography,
+                    webSite: webSite,
+                    image: image,
+                };
+                putRequest("user/editProfile", data, async (res: any) => {
+                    callbackLoading();
+                    const {
+                        name,
+                        token,
+                        username,
+                        imageUrl,
+                        biography,
+                        webSite,
+                    } = res;
+                    await AsyncStorage.setItem(
+                        "userData",
+                        JSON.stringify({
+                            name,
+                            token,
+                            username,
+                            imageUrl,
+                            biography,
+                            webSite,
+                        })
+                    );
+                    dispatch({
+                        type: "UPDATE_PROFILE",
+                        username,
+                        token,
+                        name,
+                        imageUrl,
+                        biography,
+                        webSite,
                     });
                 });
             },
@@ -121,12 +241,19 @@ export default function AppContext(props: { children: any }) {
     useEffect(() => {
         setTimeout(async () => {
             let token = null;
+            let userData: Object | null | string = {};
             try {
                 token = await AsyncStorage.getItem("token");
+                userData = await AsyncStorage.getItem("userData");
+                userData = userData ? JSON.parse(userData as string) : {};
             } catch (error) {
                 throw new Error(error);
             }
-            dispatch({ type: "RETRIEVE_TOKEN", token: token });
+            dispatch({
+                type: "GET_DATA",
+                token: token,
+                ...(userData as Object),
+            });
         }, 1000);
     }, []);
 

@@ -7,8 +7,18 @@ import InfoProFile from "../../components/Account/InfoProfile";
 import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
 
+interface ProfileProps {}
+
 export default function Profile(props: any) {
-    const { username, name, userId, route } = props;
+    const {
+        name,
+        username,
+        biography,
+        imageUrl,
+        webSite,
+        userId,
+        route,
+    } = props;
     const navigation = useNavigation();
     navigation.setOptions({
         title: username,
@@ -41,6 +51,9 @@ export default function Profile(props: any) {
                 <View>
                     <InfoProFile
                         name={name}
+                        biography={biography}
+                        imageUrl={imageUrl}
+                        webSite={webSite}
                         changeImage={changeImage}
                         userId={id}
                     />

@@ -1,8 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, IconProps } from "react-native-elements";
+import global from "../../global";
 import { openCamara } from "../../utils/common";
 import { colors } from "../../utils/theme";
+import ViewMoreTextCustom from "../ViewMoreTextCustom";
+import * as WebBrowser from "expo-web-browser";
 
 interface IInfoFileProps {
     imageUrl: string;
@@ -10,9 +13,10 @@ interface IInfoFileProps {
     followers: number;
     following: number;
     name: string;
-    bio: string;
+    biography: string;
     changeImage: Function;
     userId: number;
+    webSite: string;
 }
 
 export default function InfoProFile(props: Partial<IInfoFileProps>) {
@@ -22,9 +26,10 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
         followers = 0,
         following = 0,
         name = "Anonimo",
-        bio = "Nam animi est. Et et assumenda voluptate ea veniam. Qui deleniti non odio quo labore iure fugiat quam eum.",
+        biography = "Nam animi est. Et et assumenda voluptate ea veniam. Qui deleniti non odio quo labore iure fugiat quam eum.",
         userId,
         changeImage,
+        webSite,
     } = props;
 
     /**
@@ -38,6 +43,13 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
         }
     };
 
+    const openLink = async () => {
+        const result = await WebBrowser.openBrowserAsync(
+            "https://www.google.com"
+        );
+        console.log(result);
+    };
+
     return (
         <View>
             <View style={styles.viewContainer}>
@@ -47,7 +59,7 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
                     containerStyle={styles.userInfoAvatar}
                     source={
                         imageUrl
-                            ? { uri: imageUrl }
+                            ? { uri: global.api + imageUrl }
                             : require("../../../assets/avatar-default.jpg")
                     }
                     showAccessory={userId === 0}
@@ -72,7 +84,19 @@ export default function InfoProFile(props: Partial<IInfoFileProps>) {
                 </View>
             </View>
             <Text style={styles.textName}>{name}</Text>
-            <Text style={styles.textBio}>{bio}</Text>
+            <View style={styles.textBio}>
+                <ViewMoreTextCustom>
+                    <Text>{biography}</Text>
+                    <Text
+                        style={styles.webSite}
+                        onPress={() => {
+                            openLink();
+                        }}
+                    >
+                        {webSite}
+                    </Text>
+                </ViewMoreTextCustom>
+            </View>
         </View>
     );
 }
@@ -104,5 +128,10 @@ const styles = StyleSheet.create({
         borderColor: "#ffff",
         backgroundColor: colors.principal,
         borderRadius: 100,
+    },
+    webSite: {
+        color: colors.principal,
+        fontWeight: "bold",
+        fontSize: 18,
     },
 });

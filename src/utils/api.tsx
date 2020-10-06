@@ -48,16 +48,14 @@ export async function putRequest(
 }
 
 async function request(endPoint: string, header: any, callback: Function) {
-    const token = await AsyncStorage.getItem("token");
-    header.headers.Authorization = `Bearer ${token}`;
-    fetch(global.api + endPoint, header)
-        .then((response) => response.json())
-        .then(async (res: any) => {
-            console.log(res.msg);
-            res.msg && Alert.alert("", res.msg);
-            await callback(res);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    try {
+        const token = await AsyncStorage.getItem("token");
+        header.headers.Authorization = `Bearer ${token}`;
+        const response = await fetch(global.api + endPoint, header);
+        const responseJson = await response.json();
+        responseJson.msg && Alert.alert("", responseJson.msg);
+        callback(responseJson);
+    } catch (error) {
+        throw new Error("Request");
+    }
 }

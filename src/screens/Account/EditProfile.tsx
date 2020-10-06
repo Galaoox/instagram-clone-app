@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { colors } from "../../utils/theme";
@@ -10,6 +10,7 @@ import * as yup from "yup";
 import customMessage from "../../utils/customMessage";
 import { getRequest, putRequest } from "../../utils/api";
 import Loading from "../../components/Loading";
+import { AuthContext } from "../../components/context";
 
 interface IEditProfileProps {
     navigation: NavigationProp<ParamListBase>;
@@ -26,6 +27,7 @@ export default function EditProfile(props: IEditProfileProps) {
         imageUrl: "",
     });
     const [imageSelected, setImageSelected] = useState<any>(null);
+    const { updateProfile } = useContext(AuthContext);
 
     /**
      *  Encargado de recibir las imagenes que el usuario selecciono y
@@ -55,9 +57,18 @@ export default function EditProfile(props: IEditProfileProps) {
             webSite: values.webSite,
             image: prepareUploadImage(),
         };
-        putRequest("user/editProfile", data, (res: any) => {
-            setLooading(false);
-        });
+        updateProfile(
+            data.name,
+            data.username,
+            data.biography,
+            data.webSite,
+            data.image,
+            () => {
+                setLooading(false);
+                navigation.navigate("account");
+            }
+        );
+        putRequest("user/editProfile", data, (res: any) => {});
     };
     const prepareUploadImage = () => {
         if (imageSelected && imageSelected.uri) {
