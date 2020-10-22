@@ -22,6 +22,7 @@ export const AuthContext = createContext({
         image: Object | null,
         callbackLoading: Function
     ) => {},
+    changeEmail: (newEmail: string | null,password : string | null, callbackLoading: Function ) => {}
 });
 
 export const UserContext = createContext({

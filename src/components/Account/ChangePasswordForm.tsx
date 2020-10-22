@@ -7,6 +7,7 @@ import { colors } from "../../utils/theme";
 import * as yup from "yup";
 import customMessage from "../../utils/customMessage";
 import { notEqual } from "../../utils/common";
+import { putRequest } from "../../utils/api";
 
 interface IChangePasswordFormProps {
     setShowModal: Function;
@@ -18,6 +19,14 @@ export default function ChangePasswordForm(props: IChangePasswordFormProps) {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const submit = (values: { newPassword: string; password: string, confirmPassword: string }) => {
+        
+        putRequest('user/updatePassword', values, ()=>{
+            console.log("test");
+            setShowModal(false);
+        });
+    }
+
     return (
         <Formik
             initialValues={{
@@ -26,7 +35,7 @@ export default function ChangePasswordForm(props: IChangePasswordFormProps) {
                 confirmPassword: "",
             }}
             onSubmit={(values) => {
-                setShowModal(false);
+                submit(values);
             }}
             validationSchema={validatorSchema()}
         >

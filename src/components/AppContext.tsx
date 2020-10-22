@@ -3,6 +3,7 @@ import { ActivityIndicator, View } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext, UserContext } from "./context";
 import { postRequest, putRequest } from "../utils/api";
+import { colors } from '../utils/theme';
 
 interface IloginState {
     isLoading: boolean;
@@ -82,6 +83,13 @@ export default function AppContext(props: { children: any }) {
                     webSite: action.webSite,
                     isLoading: false,
                 };
+                
+            case "UPDATE_EMAIL":
+                return {
+                    ...prevState,
+                    token: action.token,
+                    isLoading: false,
+                }
 
             default:
                 throw new Error();
@@ -165,11 +173,11 @@ export default function AppContext(props: { children: any }) {
                         biography,
                         webSite,
                     } = res;
+                    await AsyncStorage.setItem("token", token);
                     await AsyncStorage.setItem(
                         "userData",
                         JSON.stringify({
                             name,
-                            token,
                             username,
                             imageUrl,
                             biography,
@@ -212,11 +220,11 @@ export default function AppContext(props: { children: any }) {
                         biography,
                         webSite,
                     } = res;
+                    await AsyncStorage.setItem("token", token);
                     await AsyncStorage.setItem(
                         "userData",
                         JSON.stringify({
                             name,
-                            token,
                             username,
                             imageUrl,
                             biography,
@@ -234,6 +242,21 @@ export default function AppContext(props: { children: any }) {
                     });
                 });
             },
+            changeEmail: async(newEmail: string | null, password: string | null , callbackLoading: Function) => {
+                const data = {newEmail, password};
+                putRequest('user/updateEmail', data, async(res: any)=>{
+                    await callbackLoading();
+                    const {token} = res;
+                    console.log("Imprimiendo respuesta",res);
+                    if(token){
+                        await AsyncStorage.setItem("token", token);
+                        await dispatch({
+                            type: "UPDATE_EMAIL",
+                            token,
+                        });
+                    }
+                })
+            }
         }),
         []
     );
@@ -266,7 +289,7 @@ export default function AppContext(props: { children: any }) {
                     alignItems: "center",
                 }}
             >
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large" color={colors.principal} />
             </View>
         );
     }

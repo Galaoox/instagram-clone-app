@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Formik, FormikConfig } from "formik";
 import { Input, Button } from "react-native-elements";
@@ -7,6 +7,8 @@ import { colors } from "../../utils/theme";
 import * as yup from "yup";
 import customMessage from "../../utils/customMessage";
 import { notEqual } from "../../utils/common";
+import { AuthContext } from "../../components/context";
+
 
 interface IChangeEmailFormProps {
     email: string;
@@ -16,13 +18,15 @@ interface IChangeEmailFormProps {
 export default function ChangeEmailForm(props: any) {
     const { email, setShowModal } = props;
     const [showPassword, setShowPassword] = useState(false);
-
+    const { changeEmail } = useContext(AuthContext);
     /**
      * envia los datos al backend para cambiar el correo electronico
      * @param values valores del formulario que se devuelven en un json
      */
     const submit = (values: { newEmail: string; password: string }) => {
-        setShowModal(false);
+        changeEmail(values.newEmail, values.password, ()=>{
+          setShowModal(false);
+        });
     };
 
     return (
@@ -32,7 +36,7 @@ export default function ChangeEmailForm(props: any) {
                 password: "",
             }}
             onSubmit={(values) => {
-                setShowModal(false);
+                submit(values);
             }}
             validationSchema={validatorSchema(email)}
         >
