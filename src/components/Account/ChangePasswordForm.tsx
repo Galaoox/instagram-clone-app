@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Formik, FormikConfig } from "formik";
+import { View, StyleSheet } from "react-native";
+import { Formik } from "formik";
 import { Input, Button } from "react-native-elements";
-import { emailIcon, passwordIcon } from "../../utils/icons";
+import {  passwordIcon } from "../../utils/icons";
 import { colors } from "../../utils/theme";
 import * as yup from "yup";
 import customMessage from "../../utils/customMessage";
-import { notEqual } from "../../utils/common";
 import { putRequest } from "../../utils/api";
 
 interface IChangePasswordFormProps {
@@ -18,11 +17,12 @@ export default function ChangePasswordForm(props: IChangePasswordFormProps) {
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const submit = (values: { newPassword: string; password: string, confirmPassword: string }) => {
-        
+        setLoading(true);
         putRequest('user/updatePassword', values, ()=>{
-            console.log("test");
+            setLoading(false);
             setShowModal(false);
         });
     }
@@ -109,6 +109,7 @@ export default function ChangePasswordForm(props: IChangePasswordFormProps) {
                         title="Editar contraseña"
                         onPress={() => handleSubmit()}
                         titleStyle={styles.btnTitle}
+                        loading={loading}
                     />
                 </View>
             )}

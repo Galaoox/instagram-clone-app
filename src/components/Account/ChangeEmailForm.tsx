@@ -19,13 +19,16 @@ export default function ChangeEmailForm(props: any) {
     const { email, setShowModal } = props;
     const [showPassword, setShowPassword] = useState(false);
     const { changeEmail } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
     /**
      * envia los datos al backend para cambiar el correo electronico
      * @param values valores del formulario que se devuelven en un json
      */
     const submit = (values: { newEmail: string; password: string }) => {
-        changeEmail(values.newEmail, values.password, ()=>{
-          setShowModal(false);
+        setLoading(true);
+        changeEmail(values.newEmail, values.password, () => {
+            setLoading(false);
+            setShowModal(false);
         });
     };
 
