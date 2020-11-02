@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button, Icon, Divider } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
@@ -6,13 +6,14 @@ import { useNavigation } from "@react-navigation/native";
 import InfoProFile from "../../components/Account/InfoProfile";
 import GridPosts from "../../components/Posts/GridPosts";
 import { SCREEN, colors } from "../../utils/theme";
+import { getRequest } from "../../utils/api";
+import Loading from '../../components/Loading';
 
-interface ProfileProps {}
 
 export default function Profile(props: any) {
-    const {
+    let {
         name,
-        username,
+        username = '',
         biography,
         imageUrl,
         webSite,
@@ -20,26 +21,60 @@ export default function Profile(props: any) {
         route,
     } = props;
     const navigation = useNavigation();
-    navigation.setOptions({
-        title: username,
-    });
+
     const id =
-        userId && userId === 0
-            ? 0
-            : route && route.params && route.params.userId
-            ? route.params.userId
-            : 0; // bandera que indica si es el usuario que inicio sesion
+        userId && userId === 0 ? 0 : route && route.params && route.params.userId ? route.params.userId : 0; // bandera que indica si es el usuario que inicio sesion
+
+    const [loading, setLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState<any>({})
 
     /**
      *  Encargado de recibir las imagenes que el usuario selecciono y
      *  realizar la solicitud http para cambiar el avatar del usuario
      * @param images
      */
-    const changeImage = (images: Object) => {};
+    const changeImage = (images: Object) => { };
 
     const goToEdit = () => {
         navigation.navigate("editProfile");
     };
+
+    const loadInfoUser = async () => {
+        if (id != 0) {
+            setLoading(true);
+            getRequest('user/getinfouser/' + id, (res: any) => {
+                setLoading(false);
+                setData(res);
+            });
+        } else {
+            navigation.setOptions({
+                title: username,
+            });
+            setLoading(false);
+        }
+
+    }
+    const setData = (data: any) => {
+        if (data) {
+            console.log(data.username);
+            navigation.setOptions({
+                title: data.username,
+            });
+            setUserInfo({
+                name: data.name,
+                username: data.username,
+                biography: data.biography,
+                imageUrl: data.imageUrl,
+                webSite: data.webSite,
+            });
+
+        }
+
+    }
+
+    useEffect(() => {
+        loadInfoUser();
+    }, []);
 
     return (
         <View style={styles.view}>
@@ -50,10 +85,10 @@ export default function Profile(props: any) {
                 */}
                 <View>
                     <InfoProFile
-                        name={name}
-                        biography={biography}
-                        imageUrl={imageUrl}
-                        webSite={webSite}
+                        name={name ? name : userInfo.name}
+                        biography={biography ? biography : userInfo.biography}
+                        imageUrl={imageUrl ? imageUrl : userInfo.imageUrl}
+                        webSite={webSite ? webSite : userInfo.webSite}
                         changeImage={changeImage}
                         userId={id}
                     />
@@ -68,14 +103,14 @@ export default function Profile(props: any) {
                                 titleStyle={styles.btnTitle}
                             />
                         ) : (
-                            <Button
-                                containerStyle={styles.btnFollowContainer}
-                                buttonStyle={styles.btnFollow}
-                                title="Seguir"
-                                type="clear"
-                                titleStyle={styles.btnTitleFollow}
-                            />
-                        )}
+                                <Button
+                                    containerStyle={styles.btnFollowContainer}
+                                    buttonStyle={styles.btnFollow}
+                                    title="Seguir"
+                                    type="clear"
+                                    titleStyle={styles.btnTitleFollow}
+                                />
+                            )}
                         <View>
                             <Icon
                                 type="material-community"
@@ -87,6 +122,7 @@ export default function Profile(props: any) {
                     </View>
                 </View>
             </GridPosts>
+            <Loading isVisible={loading} />
         </View>
     );
 }

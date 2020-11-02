@@ -11,6 +11,7 @@ import { ListItem } from "react-native-elements";
 import FooterList from "../FooterList";
 import ListEmptyView from "../ListEmptyView";
 import { useNavigation } from "@react-navigation/native";
+import global from "../../global";
 
 interface IListRequestProps {
     users: any[];
@@ -33,16 +34,10 @@ export default function ListSearch(props: IListRequestProps) {
 
     const navigation = useNavigation();
 
-    /**
-     * Envia al usuario a la vista de profile del usuario que selecciono
-     */
     const gotToProfile = (userId: number) => {
         navigation.navigate("profile", { userId: userId });
     };
-    /**
-     *  Renderiza cada elemento de la lista
-     *
-     */
+
     const renderItem = ({ item }: any) => {
         return (
             <TouchableOpacity>
@@ -50,8 +45,8 @@ export default function ListSearch(props: IListRequestProps) {
                     leftAvatar={{
                         rounded: true,
                         size: "large",
-                        source: item.avatarUrl
-                            ? { uri: item.avatarUrl }
+                        source: item.imageUrl
+                            ? { uri: global.api + item.imageUrl }
                             : require("../../../assets/avatar-default.jpg"),
                     }}
                     title={item.username}
@@ -66,9 +61,9 @@ export default function ListSearch(props: IListRequestProps) {
             <FlatList
                 data={users}
                 renderItem={renderItem}
-                initialNumToRender={10}
+                initialNumToRender={5}
                 keyExtractor={(item, index) => index.toString()}
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.3}
                 onEndReached={handleLoadMore}
                 refreshing={refreshing}
                 onRefresh={reload}

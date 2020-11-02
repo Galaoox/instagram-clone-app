@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -10,84 +10,65 @@ import { SearchBar } from "react-native-elements";
 import { IUser } from "../models/user";
 import ListSearch from "../components/Search/ListSearch";
 import { colors } from "../utils/theme";
+import { getRequest } from "../utils/api";
 
 interface ISearchProps {
     navigation: NavigationProp<ParamListBase>;
 }
 export default function Search(props: ISearchProps) {
     const { navigation } = props;
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState<string | null>('');
     const [users, setUsers] = useState<IUser[]>([]);
-    const [totalUsers, setTotalUsers] = useState(0);
     const [reload, setReload] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [startUser, setStartUser] = useState<IUser | null>(null);
+    const [limitsPaginate, setLimitsPaginate] = useState({ initial: 0, final: 0 });
 
-    /**
-     * Encargado de obtener las solicitudes
-     *
-     */
-    const loadUsers = async () => {
+    const loadUsers = async (inicial: number = 0, final: number = 10) => {
         setLoading(true);
-        setUsers(mockData());
+        const data: any = await getUsers(inicial, final);
+        setUsers(data);
         setLoading(false);
     };
 
-    /**
-     * Obtiene las solicitudes pendientes del usuario
-     *
-     */
-    const getUsers = async () => {
-        // ejecuta una peticion a la api y me las solicitudes de ese usuario
-        setUsers(mockData());
-    };
+    const changeLimits = (newValue: any) => {
+        setLimitsPaginate({ final: newValue?.final, initial: newValue?.initial });
+    }
 
-    /**
-     * recarga las solicitudes pendientes del usuario
-     *
-     */
     const reloadList = async () => {
         setReload(true);
-        // ejecuta una peticion a la api y me las solicitudes de ese usuario
         await loadUsers();
         setReload(false);
     };
-    /**
-     * Obtiene la cantidad total de solicitudes que tiene el usuario
-     */
-    const getTotalUsers = () => {
-        setTotalUsers(50);
-    };
+
 
     /**
      * Obtiene progresivamente las solicitudes
      */
     const handleLoadMore = async () => {
-        if (users.length < totalUsers) {
-            setLoadingMore(true);
-            const data = await mockData();
-            data.length > 0
-                ? setStartUser(data[data.length - 1])
-                : setLoadingMore(false);
-
-            setUsers([...users, ...data]);
-        } else {
-            setLoadingMore(false);
-        }
+        setLoadingMore(true);
+        const data: any = await getUsers(limitsPaginate.initial, limitsPaginate.final);
+        setUsers([...users, ...data]);
+        setLoadingMore(false);
     };
 
     const onChangeSearch = (value: string) => {
         setSearch(value);
-        loadUsers();
     };
+    const getUsers = async (initial: number = 0, final: number = 10) => {
+        let data = null;
+        await getRequest(`user/getUsers?initial=${initial}&final=${final}&term=${search}`,
+            (res: any) => {
+                changeLimits(res.limit);
+                data = res.data;
+            });
+        return data;
+    }
 
-    useFocusEffect(
-        useCallback(() => {
-            getUsers();
-            getTotalUsers();
-        }, [])
-    );
+
+    useEffect(() => {
+        loadUsers();
+    }, [search])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -105,7 +86,9 @@ export default function Search(props: ISearchProps) {
                     lightTheme={true}
                     showLoading={loading}
                     containerStyle={styles.containerSearch}
-                    value={search}
+                    value={search as string}
+                    onClear={() => setSearch('')}
+                    onChange={(event) => setSearch(event.nativeEvent.text)}
                     searchIcon={{
                         name: "magnify",
                         color: colors.principal,
@@ -145,15 +128,4 @@ const styles = StyleSheet.create({
     },
 });
 
-function mockData(recargando = false) {
-    const data = [];
-    for (let index = 0; index < 6; index++) {
-        data.push({
-            username: recargando ? "galaoox" : "ernestheaney",
-            avatarUrl: `https://picsum.photos/id/${index + 1}/200/300`,
-            name: "Sheila Reinger",
-            id: index + 1,
-        });
-    }
-    return data;
-}
+
